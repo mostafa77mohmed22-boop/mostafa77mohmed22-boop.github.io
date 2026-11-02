@@ -40,13 +40,13 @@
   .view{display:none}
   .view.on{display:block;animation:vin .38s var(--ease)}
   @keyframes vin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
-  .view.on .pad>*{animation:rise .55s var(--ease) both}
-  .view.on .pad>*:nth-child(2){animation-delay:.05s}
-  .view.on .pad>*:nth-child(3){animation-delay:.10s}
-  .view.on .pad>*:nth-child(4){animation-delay:.15s}
-  .view.on .pad>*:nth-child(5){animation-delay:.20s}
-  .view.on .pad>*:nth-child(6){animation-delay:.25s}
-  .view.on .pad>*:nth-child(7){animation-delay:.30s}
+  body.booted .view.on .pad>*{animation:rise .55s var(--ease) both}
+  body.booted .view.on .pad>*:nth-child(2){animation-delay:.05s}
+  body.booted .view.on .pad>*:nth-child(3){animation-delay:.10s}
+  body.booted .view.on .pad>*:nth-child(4){animation-delay:.15s}
+  body.booted .view.on .pad>*:nth-child(5){animation-delay:.20s}
+  body.booted .view.on .pad>*:nth-child(6){animation-delay:.25s}
+  body.booted .view.on .pad>*:nth-child(7){animation-delay:.30s}
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   .pad{padding:0 16px}
 
@@ -195,9 +195,34 @@
   .nav button svg{width:21px;height:21px;transition:transform .3s var(--spring)}
   .nav button.on{background:var(--chip);color:var(--red);font-weight:800}
   .nav button.on svg{transform:translateY(-1px) scale(1.08)}
+
+  /* ---------- opening splash ---------- */
+  #splash{position:fixed;inset:0;z-index:100;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;gap:15px;cursor:pointer;
+    background:linear-gradient(180deg,#ED6527 0%,#F07F3E 30%,#F6A868 58%,#F9CD9C 82%,#F6F2E7 100%);
+    transition:opacity .5s var(--ease),visibility .5s}
+  #splash.out{opacity:0;visibility:hidden}
+  .sp-mark{width:66px;height:66px;display:grid;grid-template-columns:1fr 1fr;gap:5px}
+  .sp-mark i{background:#fff;border-radius:9px;box-shadow:0 10px 22px rgba(120,40,0,.25);
+    animation:pop .55s var(--spring) both}
+  .sp-mark i:nth-child(2){animation-delay:.07s}
+  .sp-mark i:nth-child(3){animation-delay:.14s}
+  .sp-mark i:nth-child(4){animation-delay:.21s}
+  @keyframes pop{from{transform:scale(0) rotate(-16deg);opacity:0}to{transform:scale(1) rotate(0);opacity:1}}
+  .sp-name{color:#fff;font-size:31px;font-weight:800;letter-spacing:3px;
+    animation:rise .5s var(--ease) .3s both;text-shadow:0 2px 18px rgba(160,60,0,.30)}
+  .sp-tag{color:rgba(255,255,255,.94);font-size:14.5px;font-weight:600;
+    animation:rise .5s var(--ease) .46s both}
+  @media (prefers-reduced-motion: reduce){#splash{display:none}}
 </style>
 </head>
 <body>
+
+<div id="splash">
+  <div class="sp-mark"><i></i><i></i><i></i><i></i></div>
+  <div class="sp-name">HTMHGR</div>
+  <div class="sp-tag">مساعد قناة الذكاء الاصطناعي</div>
+</div>
 
 <!-- ================= HOME ================= -->
 <div class="view on" id="view-home">
@@ -521,6 +546,24 @@
     paintHide();
   });
   paintHide();
+
+  /* opening splash — melts away into the home screen;
+     tap skips, reduced-motion skips, content stagger waits for it */
+  var splash = document.getElementById("splash");
+  function endSplash(){
+    if (!splash || splash.classList.contains("out")) return;
+    splash.classList.add("out");
+    document.body.classList.add("booted");
+    setTimeout(function(){
+      if (splash && splash.parentNode) splash.parentNode.removeChild(splash);
+    }, 650);
+  }
+  if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+    endSplash();
+  } else {
+    setTimeout(endSplash, 1250);
+    if (splash) splash.addEventListener("click", endSplash);
+  }
 
   /* setup state — Telegram CloudStorage with localStorage fallback */
   var steps = {start:true, ask:false, invite:false, streak:false};
