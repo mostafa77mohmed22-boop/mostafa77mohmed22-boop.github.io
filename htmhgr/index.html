@@ -7,9 +7,8 @@
 <script async src="https://telegram.org/js/telegram-web-app.js" onload="window.__tgInit&&window.__tgInit()"></script>
 <script>
 /* Telegram keeps its native loading placeholder up until the app calls
-   WebApp.ready() (documented developer pitfall: "app stuck on loading
-   spinner -> call tg.ready()"). Poll for the bridge and call ready()
-   the instant it exists, independent of the main script below. */
+   WebApp.ready(). Poll for the bridge and call ready() the instant it
+   exists, independent of the main script below. */
 (function(){
   var p = setInterval(function(){
     var w = window.Telegram && window.Telegram.WebApp;
@@ -20,141 +19,240 @@
 </script>
 <style>
   :root{
-    --cream:#F6F2E7; --paper:#FFFDF6; --ink:#221D15; --red:#E60000;
-    --muted:#8A8172; --line:#E7DFCE; --gold:#C9962E;
+    --cream:#F6F2E7; --paper:#FFFDF8; --ink:#211C12; --red:#E60000;
+    --red-soft:#FDECEA; --muted:#8A8172; --line:#E9E1CE; --track:#EFE7D3;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{scroll-behavior:smooth}
   body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--cream);color:var(--ink);
-       padding:18px 16px 110px;min-height:100vh}
+       padding:0 18px 118px;min-height:100vh}
   .display{font-family:"Aref Ruqaa","Amiri",serif}
-  /* header */
-  .hero{background:linear-gradient(160deg,#FFFDF6 0%,#F6F2E7 55%,#F1E7CF 100%);
-        border:1px solid var(--line);border-radius:26px;padding:22px 20px 18px;position:relative;overflow:hidden}
-  .hero::after{content:"";position:absolute;inset-inline-end:-40px;top:-40px;width:150px;height:150px;
-        border-radius:50%;background:radial-gradient(circle,rgba(230,0,0,.10),transparent 70%)}
-  .greet{font-size:30px;line-height:1.25;color:var(--ink)}
-  .greet b{color:var(--red);font-weight:700}
-  .dateline{color:var(--muted);font-size:13px;margin-top:6px}
-  .pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
-  .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;
-        font-size:13px;display:flex;align-items:center;gap:6px}
-  .pill strong{color:var(--red)}
-  /* generic card */
-  .card{background:var(--paper);border:1px solid var(--line);border-radius:22px;
-        padding:18px;margin-top:16px}
-  .card h2{font-size:19px;margin-bottom:4px}
-  .card .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
-  /* setup checklist */
-  .progress{height:8px;background:#EFE8D6;border-radius:99px;overflow:hidden;margin:10px 0 14px}
-  .progress i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .4s}
-  .step{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:1px dashed var(--line)}
-  .step:first-of-type{border-top:none}
-  .step .box{width:26px;height:26px;border-radius:50%;border:2px solid #D8CFB8;flex:0 0 26px;
-        display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;background:#fff}
-  .step.done .box{background:var(--red);border-color:var(--red)}
-  .step .t{flex:1}
-  .step .t b{font-size:15px;display:block}
-  .step .t span{color:var(--muted);font-size:12.5px}
-  .chip{background:#FDECEC;color:var(--red);border-radius:999px;font-size:12px;
-        padding:4px 10px;font-weight:700;white-space:nowrap}
-  .chip.gold{background:#FBF3DC;color:var(--gold)}
-  /* action grid */
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .tile{border:1.5px dashed #DCD2B8;border-radius:20px;padding:18px 12px;text-align:center;
-        background:#FFFef9;cursor:pointer;transition:transform .08s}
+  svg.ic{width:22px;height:22px;flex:0 0 22px;stroke:currentColor;fill:none;
+         stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+
+  /* ---------- header ---------- */
+  .topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0 4px}
+  .talk{background:var(--red);color:#fff;border:none;border-radius:999px;cursor:pointer;
+        padding:11px 18px;font-size:15.5px;font-weight:800;font-family:inherit;
+        display:flex;align-items:center;gap:8px;box-shadow:0 10px 22px rgba(230,0,0,.28)}
+  .talk svg{width:19px;height:19px;stroke:#fff}
+  .brand{background:#fff;border-radius:999px;padding:8px 14px 8px 10px;display:flex;
+         align-items:center;gap:8px;box-shadow:0 4px 14px rgba(34,29,21,.08)}
+  .brand .mark{width:24px;height:24px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .brand .mark i{background:var(--red);border-radius:3px}
+  .brand b{font-size:16.5px;letter-spacing:.2px}
+  .hero{padding:20px 2px 6px}
+  .greet{font-size:41px;line-height:1.3;font-weight:700}
+  .greet b{color:var(--red)}
+  .greet .dot{color:var(--red)}
+  .meta{color:var(--muted);font-size:14px;margin-top:2px}
+  .streak{display:inline-flex;align-items:center;gap:7px;background:#fff;border-radius:999px;
+          padding:8px 14px;font-size:13.5px;font-weight:700;margin-top:14px;
+          box-shadow:0 4px 14px rgba(34,29,21,.07)}
+
+  /* ---------- cards & sections ---------- */
+  .card{background:var(--paper);border-radius:26px;padding:20px;margin-top:20px;
+        box-shadow:0 6px 24px rgba(34,29,21,.05)}
+  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
+  .card-h h2{font-size:19.5px;font-weight:800}
+  .count{color:var(--muted);font-size:13.5px;font-weight:600;white-space:nowrap}
+  .sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:26px 2px 12px}
+  .sec-h h2{font-size:20px;font-weight:800}
+  .sec-h .more{color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer}
+
+  /* segmented progress */
+  .segs{display:flex;gap:6px;margin:12px 0 6px}
+  .segs i{flex:1;height:6px;border-radius:99px;background:var(--track)}
+  .segs i.on{background:var(--red)}
+
+  /* setup rows */
+  .srow{display:flex;align-items:center;gap:13px;padding:13px 0;border-top:1px solid var(--line)}
+  .srow:first-of-type{border-top:none}
+  .srow .ric{width:40px;height:40px;flex:0 0 40px;border-radius:50%;background:var(--cream);
+             display:flex;align-items:center;justify-content:center;color:var(--ink)}
+  .srow .ric svg{width:21px;height:21px}
+  .srow .t{flex:1;min-width:0}
+  .srow .t b{display:block;font-size:16px;font-weight:700}
+  .srow .t span{color:var(--muted);font-size:13px}
+  .chip{background:var(--red-soft);color:var(--red);border-radius:999px;font-size:13px;
+        padding:5px 11px;font-weight:800;white-space:nowrap}
+  .chip.done{background:var(--red);color:#fff}
+
+  /* checklist */
+  .bar{height:7px;background:var(--track);border-radius:99px;overflow:hidden;margin:12px 0 4px}
+  .bar i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .45s}
+  .crow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer}
+  .crow:first-of-type{border-top:none}
+  .crow .ck{width:25px;height:25px;flex:0 0 25px;border-radius:50%;border:2px solid #D9CFB6;
+            display:flex;align-items:center;justify-content:center;background:#fff}
+  .crow .ck svg{width:13px;height:13px;stroke:#fff;stroke-width:3}
+  .crow.done .ck{background:var(--red);border-color:var(--red)}
+  .crow .t{flex:1;font-size:15.5px;font-weight:600}
+  .crow.done .t{color:var(--muted)}
+
+  /* skill tiles */
+  .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .tile{background:var(--paper);border:1.5px dashed #DCD2B8;border-radius:24px;padding:22px 10px 18px;
+        text-align:center;cursor:pointer;transition:transform .08s}
   .tile:active{transform:scale(.97)}
-  .tile .ic{font-size:26px;display:block;margin-bottom:8px}
-  .tile b{font-size:15px;display:block}
-  .tile span{color:var(--muted);font-size:12px}
-  /* list rows */
-  .row{display:flex;align-items:center;gap:12px;padding:13px 2px;border-top:1px dashed var(--line);cursor:pointer}
+  .tile .tic{width:46px;height:46px;margin:0 auto 10px;border-radius:50%;background:var(--cream);
+             display:flex;align-items:center;justify-content:center;color:var(--ink)}
+  .tile b{display:block;font-size:15.5px;font-weight:700}
+  .tile span{color:var(--muted);font-size:12.5px}
+  .wide{grid-column:1/-1;display:flex;align-items:center;gap:14px;text-align:start;padding:18px}
+  .wide .tic{margin:0}
+  .wide .t{flex:1}.wide .t b{font-size:16px}
+  .wide .plus{width:42px;height:42px;flex:0 0 42px;border-radius:50%;background:#fff;
+              box-shadow:0 4px 14px rgba(34,29,21,.10);display:flex;align-items:center;justify-content:center}
+  .wide .plus svg{width:19px;height:19px}
+
+  /* plain rows */
+  .row{display:flex;align-items:center;gap:13px;padding:14px 2px;border-top:1px solid var(--line);cursor:pointer}
   .row:first-of-type{border-top:none}
-  .row .n{font-size:20px;font-weight:800;color:var(--ink);min-width:34px;text-align:center}
-  .row .t{flex:1}.row .t b{display:block;font-size:15px}.row .t span{color:var(--muted);font-size:12.5px}
-  .row .go{color:#C9BFA6;font-size:18px}
+  .row .ric{color:var(--ink);display:flex}
+  .row .t{flex:1}.row .t b{display:block;font-size:16px;font-weight:700}
+  .row .t span{color:var(--muted);font-size:13px}
+  .row .num{font-size:19px;font-weight:800}
+  .row .go{color:#C6BBA0;font-size:19px}
+
   /* levels */
-  .lvl{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px dashed var(--line)}
+  .lvl{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
   .lvl:first-of-type{border-top:none}
-  .lvl .e{font-size:20px}.lvl b{flex:1;font-size:15px}.lvl span{color:var(--muted);font-size:13px}
-  /* talk button */
-  .talk{position:fixed;top:14px;inset-inline-start:14px;z-index:30;background:var(--red);color:#fff;
-        border:none;border-radius:999px;padding:11px 18px;font-size:15px;font-weight:700;cursor:pointer;
-        box-shadow:0 8px 20px rgba(230,0,0,.30);font-family:inherit}
-  /* bottom nav */
-  .nav{position:fixed;bottom:12px;inset-inline:12px;z-index:30;background:#fff;border:1px solid var(--line);
-       border-radius:999px;display:flex;justify-content:space-around;padding:9px 6px;
-       box-shadow:0 10px 30px rgba(34,29,21,.10)}
-  .nav button{background:none;border:none;font-family:inherit;font-size:11.5px;color:var(--muted);
-       display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:5px 12px;border-radius:999px}
-  .nav button .ic{font-size:19px}
-  .nav button.on{background:#FDECEC;color:var(--red);font-weight:700}
-  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:18px;line-height:1.9}
+  .lvl .d{width:11px;height:11px;border-radius:50%;flex:0 0 11px}
+  .lvl b{flex:1;font-size:15.5px}
+  .lvl span{color:var(--muted);font-size:13px}
+
+  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px;line-height:2}
   .foot a{color:var(--red);text-decoration:none;font-weight:700}
+
+  /* bottom nav */
+  .nav{position:fixed;bottom:14px;inset-inline:14px;z-index:30;background:#fff;border-radius:999px;
+       display:flex;justify-content:space-around;padding:8px;
+       box-shadow:0 14px 34px rgba(34,29,21,.14)}
+  .nav button{background:none;border:none;font-family:inherit;font-size:11px;color:var(--muted);
+       display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
+       padding:7px 15px;border-radius:999px}
+  .nav button svg{width:21px;height:21px}
+  .nav button.on{background:var(--red-soft);color:var(--red);font-weight:800}
 </style>
 </head>
 <body>
 
-<button class="talk" id="talkBtn">💬 كلّم البوت</button>
-
-<section class="hero" id="sec-home">
-  <div class="greet display" id="greet">مساء الخير</div>
-  <div class="dateline" id="dateline"></div>
-  <div class="pills">
-    <div class="pill">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
-    <div class="pill">⭐ نقاطك عند البوت — زر <strong>نقاطي</strong> بالأسفل يعرضها</div>
+<div class="topbar" id="sec-home">
+  <button class="talk" id="talkBtn">
+    <svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg>
+    كلّم البوت
+  </button>
+  <div class="brand">
+    <span class="mark"><i></i><i></i><i></i><i></i></span>
+    <b>HTMHGR</b>
   </div>
-</section>
+</div>
 
-<section class="card" id="sec-setup">
-  <h2 class="display">خلِّ البوت أذكى معك</h2>
-  <div class="sub">خطوات قصيرة ترفع رتبتك وتفتح مميزاتك</div>
-  <div class="progress"><i id="progBar" style="width:25%"></i></div>
-  <div class="sub" id="progText" style="margin:0 0 6px">أكملت ١ من ٤</div>
-  <div class="step" data-step="start"><div class="box">✓</div>
+<header class="hero">
+  <div class="greet display" id="greet">مساء الخير<span class="dot">.</span></div>
+  <div class="meta" id="dateline"></div>
+  <div class="streak">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
+</header>
+
+<section class="card">
+  <div class="card-h">
+    <h2 class="display">خلِّ البوت أذكى معك</h2>
+    <span class="count" id="progText">أكملت ١ من ٤</span>
+  </div>
+  <div class="segs" id="segWrap"><i></i><i></i><i></i><i></i></div>
+
+  <div class="srow" data-step="start">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
     <div class="t"><b>ابدأ محادثة مع البوت</b><span>أول خطوة — أنجزتها بفتحك هذه الواجهة</span></div>
-    <div class="chip gold">الأساس</div></div>
-  <div class="step" data-step="ask"><div class="box"></div>
+    <span class="chip" data-chip="start">الأساس</span>
+  </div>
+  <div class="srow" data-step="ask">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M15 4V2m0 20v-2M8 9h.01M16 9h.01M9 20h6M12 4a5 5 0 0 1 5 5c0 2-1 3-1.7 4-.6.8-1 1.3-1 2.5h-4.6c0-1.2-.4-1.7-1-2.5C8 12 7 11 7 9a5 5 0 0 1 5-5z" transform="translate(-1.5 0)"/></svg></span>
     <div class="t"><b>اسأل البوت أول سؤال</b><span>أي سؤال عن الذكاء الاصطناعي أو غيره</span></div>
-    <div class="chip">+٢ نقطة</div></div>
-  <div class="step" data-step="invite"><div class="box"></div>
+    <span class="chip" data-chip="ask">+٢</span>
+  </div>
+  <div class="srow" data-step="invite">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4.5.2-4.5-2.3C7.5 3.4 11 3.6 12 8zM12 8s4.5.2 4.5-2.3C16.5 3.4 13 3.6 12 8z"/></svg></span>
     <div class="t"><b>ادعُ صديقاً برابطك</b><span>أعلى مكافأة في النظام كله</span></div>
-    <div class="chip">+٢٠ نقطة</div></div>
-  <div class="step" data-step="streak"><div class="box"></div>
+    <span class="chip" data-chip="invite">+٢٠</span>
+  </div>
+  <div class="srow" data-step="streak">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></span>
     <div class="t"><b>حافظ على نشاطك اليومي</b><span>أيام متتالية تعني مكافآت إضافية</span></div>
-    <div class="chip">+٥ يومياً</div></div>
-</section>
-
-<section class="card" id="sec-skills">
-  <h2 class="display">مهارات البوت</h2>
-  <div class="sub">أشياء يقدر يسويها لك من المحادثة مباشرة</div>
-  <div class="grid">
-    <div class="tile" data-act="ask"><span class="ic">❓</span><b>اسأل البوت</b><span>جواب فوري مرح</span></div>
-    <div class="tile" data-act="points"><span class="ic">⭐</span><b>نقاطي ورتبتي</b><span>بطاقتك في المحادثة</span></div>
-    <div class="tile" data-act="invite"><span class="ic">🎁</span><b>رابط دعوتي</b><span>شاركه واكسب</span></div>
-    <div class="tile" data-act="ticket"><span class="ic">📩</span><b>طلب للمشرف</b><span>يوصله بنفسه</span></div>
+    <span class="chip" data-chip="streak">+٥</span>
   </div>
 </section>
 
-<section class="card" id="sec-today">
-  <h2 class="display">اليوم</h2>
-  <div class="sub">روابطك السريعة</div>
-  <div class="row" data-act="points"><div class="n">⭐</div>
-    <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div><div class="go">‹</div></div>
-  <div class="row" data-act="channel"><div class="n">📺</div>
-    <div class="t"><b>القناة</b><span>أخبار الذكاء الاصطناعي أولاً بأول</span></div><div class="go">‹</div></div>
-  <div class="row" data-act="vip"><div class="n">💎</div>
-    <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div><div class="go">‹</div></div>
+<section class="card">
+  <div class="card-h">
+    <h2 class="display">إعداد حسابك</h2>
+    <span class="count" id="setupText">أكملت ١ من ٤</span>
+  </div>
+  <div class="bar"><i id="setupBar" style="width:25%"></i></div>
+  <div class="crow" data-step="start"><span class="ck"></span><span class="t">افتح واجهة البوت</span></div>
+  <div class="crow" data-step="ask"><span class="ck"></span><span class="t">اسأل البوت أول سؤال</span></div>
+  <div class="crow" data-step="invite"><span class="ck"></span><span class="t">ادعُ صديقاً برابطك</span></div>
+  <div class="crow" data-step="streak"><span class="ck"></span><span class="t">ارجع غداً وحافظ على سلسلتك</span></div>
 </section>
 
-<section class="card" id="sec-levels">
+<div class="sec-h" id="sec-skills">
+  <h2 class="display">مهارات البوت</h2>
+  <span class="more" data-act="ask">اسأل البوت ←</span>
+</div>
+<div class="tiles">
+  <div class="tile" data-act="ask">
+    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></span>
+    <b>اسأل البوت</b><span>جواب فوري مرح</span>
+  </div>
+  <div class="tile" data-act="points">
+    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
+    <b>نقاطي ورتبتي</b><span>بطاقتك في المحادثة</span>
+  </div>
+  <div class="tile wide" data-act="invite">
+    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span>
+    <div class="t"><b>رابط دعوتي</b><span>شاركه مع أصدقائك واكسب أعلى النقاط</span></div>
+    <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+  </div>
+  <div class="tile wide" data-act="ticket">
+    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+    <div class="t"><b>طلب للمشرف</b><span>يوصله بنفسه ويتابعه معك</span></div>
+    <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+  </div>
+</div>
+
+<div class="sec-h" id="sec-today">
+  <h2 class="display">اليوم</h2>
+</div>
+<div>
+  <div class="row" data-act="points">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
+    <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div>
+    <span class="go">‹</span>
+  </div>
+  <div class="row" data-act="channel">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg></span>
+    <div class="t"><b>القناة</b><span>أخبار الذكاء الاصطناعي أولاً بأول</span></div>
+    <span class="go">‹</span>
+  </div>
+  <div class="row" data-act="vip">
+    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18M9.5 3 8 9l4 12M14.5 3 16 9l-4 12"/></svg></span>
+    <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div>
+    <span class="go">‹</span>
+  </div>
+</div>
+
+<div class="sec-h" id="sec-levels">
   <h2 class="display">الرتب والمميزات</h2>
-  <div class="sub">كل ما تجمع أكثر، تصعد أكثر</div>
-  <div class="lvl"><span class="e">🌱</span><b>عضو</b><span>من ٠ نقطة</span></div>
-  <div class="lvl"><span class="e">🔥</span><b>نشيط</b><span>من ١٠٠ — بطاقة ولقب</span></div>
-  <div class="lvl"><span class="e">⭐</span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
-  <div class="lvl"><span class="e">💎</span><b>ذهبي</b><span>من ٧٠٠ — بحث معمق شهرياً</span></div>
-  <div class="lvl"><span class="e">👑</span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
-</section>
+  <span class="more">كل ما تجمع أكثر، تصعد أكثر</span>
+</div>
+<div>
+  <div class="lvl"><span class="d" style="background:#9DBE8C"></span><b>عضو</b><span>من ٠ نقطة</span></div>
+  <div class="lvl"><span class="d" style="background:#E8A13A"></span><b>نشيط</b><span>من ١٠٠ — بطاقة ولقب</span></div>
+  <div class="lvl"><span class="d" style="background:#E60000"></span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
+  <div class="lvl"><span class="d" style="background:#C9962E"></span><b>ذهبي</b><span>من ٧٠٠ — بحث معمق شهرياً</span></div>
+  <div class="lvl"><span class="d" style="background:#211C12"></span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
+</div>
 
 <div class="foot">
   مساعد قناة ومجموعة أخبار الذكاء الاصطناعي<br>
@@ -162,10 +260,10 @@
 </div>
 
 <nav class="nav">
-  <button data-nav="sec-home" class="on"><span class="ic">🏠</span>الرئيسية</button>
-  <button data-nav="sec-skills"><span class="ic">🧩</span>المهارات</button>
-  <button data-nav="sec-today"><span class="ic">⭐</span>نقاطي</button>
-  <button data-nav="sec-levels"><span class="ic">💎</span>الرتب</button>
+  <button data-nav="sec-home" class="on"><svg viewBox="0 0 24 24" class="ic"><path d="m3 11 9-8 9 8"/><path d="M5 9.5V21h14V9.5"/></svg>الرئيسية</button>
+  <button data-nav="sec-skills"><svg viewBox="0 0 24 24" class="ic"><path d="M14 3a3 3 0 0 1 3 3h1a3 3 0 0 1 0 6h-1v3a3 3 0 1 1-6 0v-1H8a3 3 0 1 1 0-6h3V6a3 3 0 0 1 3-3z" transform="translate(0 1)"/></svg>المهارات</button>
+  <button data-nav="sec-today"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg>نقاطي</button>
+  <button data-nav="sec-levels"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18"/></svg>الرتب</button>
 </nav>
 
 <script>
@@ -180,7 +278,8 @@
     var greetWord = now.getHours() < 12 ? "صباح الخير" : "مساء الخير";
     var first = user && user.first_name ? user.first_name : "";
     document.getElementById("greet").innerHTML =
-      greetWord + (first ? "، <b>" + first.replace(/[<>&]/g,"") + "</b>" : "");
+      greetWord + (first ? "، <b>" + first.replace(/[<>&]/g,"") + "</b>" : "") +
+      '<span class="dot">.</span>';
   }
   function bindTg(){
     tg = window.Telegram && window.Telegram.WebApp;
@@ -200,21 +299,30 @@
       now.toLocaleDateString("ar", {weekday:"long", day:"numeric", month:"long"});
   }catch(e){}
 
-  /* setup checklist — persisted per user in Telegram CloudStorage */
+  /* setup state — persisted per user in Telegram CloudStorage,
+     with a localStorage fallback */
   var steps = {start:true, ask:false, invite:false, streak:false};
+  var CHECK = '<svg viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6.5"/></svg>';
   function renderSteps(){
     var done = 0;
-    Object.keys(steps).forEach(function(k){
-      var el = document.querySelector('[data-step="'+k+'"]');
-      if (!el) return;
-      el.classList.toggle("done", !!steps[k]);
-      el.querySelector(".box").textContent = steps[k] ? "✓" : "";
-      if (steps[k]) done++;
-    });
-    document.getElementById("progBar").style.width = (done/4*100) + "%";
+    Object.keys(steps).forEach(function(k){ if (steps[k]) done++; });
     var ar = ["٠","١","٢","٣","٤"];
-    document.getElementById("progText").textContent =
-      "أكملت " + ar[done] + " من ٤";
+    var txt = "أكملت " + ar[done] + " من ٤";
+    document.getElementById("progText").textContent = txt;
+    document.getElementById("setupText").textContent = txt;
+    document.getElementById("setupBar").style.width = (done/4*100) + "%";
+    var segs = document.querySelectorAll("#segWrap i");
+    segs.forEach(function(s, i){ s.classList.toggle("on", i < done); });
+    document.querySelectorAll(".crow").forEach(function(el){
+      var k = el.getAttribute("data-step");
+      el.classList.toggle("done", !!steps[k]);
+      el.querySelector(".ck").innerHTML = steps[k] ? CHECK : "";
+    });
+    document.querySelectorAll("[data-chip]").forEach(function(el){
+      var k = el.getAttribute("data-chip");
+      el.classList.toggle("done", !!steps[k]);
+      if (steps[k]) el.textContent = "✓";
+    });
   }
   function saveSteps(){
     try{
@@ -252,6 +360,14 @@
     if (user && user.id) return "https://t.me/htmhgr_helper_bot?start=ref_" + user.id;
     return "https://t.me/htmhgr_helper_bot";
   }
+  function doInvite(){
+    steps.invite = true; saveSteps(); renderSteps();
+    var link = inviteLink();
+    if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
+    if (tg) tg.showPopup({title:"رابط دعوتك 🎁",
+      message:"انسخ وشارك: " + link,
+      buttons:[{type:"ok", text:"تمام"}]});
+  }
 
   document.getElementById("talkBtn").addEventListener("click", function(){
     if (tg) tg.close(); else openChat();
@@ -265,27 +381,15 @@
       else if (act === "ticket"){ if (tg) tg.close(); }
       else if (act === "channel"){ if (tg) tg.openTelegramLink("https://t.me/hatmhgr"); }
       else if (act === "vip"){ send("vip"); if (tg) tg.close(); }
-      else if (act === "invite"){
-        steps.invite = true; saveSteps(); renderSteps();
-        var link = inviteLink();
-        if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
-        if (tg) tg.showPopup({title:"رابط دعوتك 🎁",
-          message:"انسخ وشارك: " + link,
-          buttons:[{type:"ok", text:"تمام"}]});
-      }
+      else if (act === "invite"){ doInvite(); }
     });
   });
 
   document.querySelectorAll("[data-step]").forEach(function(el){
     el.addEventListener("click", function(){
       var k = el.getAttribute("data-step");
-      if (k === "invite"){
-        var link = inviteLink();
-        if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
-        steps.invite = true; saveSteps(); renderSteps();
-        if (tg) tg.showPopup({title:"رابط دعوتك 🎁",
-          message:"انسخ وشارك: " + link, buttons:[{type:"ok", text:"تمام"}]});
-      } else if (k === "ask"){ if (tg) tg.close(); }
+      if (k === "invite"){ doInvite(); }
+      else if (k === "ask"){ steps.ask = true; saveSteps(); renderSteps(); if (tg) tg.close(); }
     });
   });
 
