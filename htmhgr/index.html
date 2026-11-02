@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>واجهة بوت HTMHGR</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<style>
+  :root{
+    --cream:#F6F2E7; --paper:#FFFDF6; --ink:#221D15; --red:#E60000;
+    --muted:#8A8172; --line:#E7DFCE; --gold:#C9962E;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--cream);color:var(--ink);
+       padding:18px 16px 110px;min-height:100vh}
+  .display{font-family:"Aref Ruqaa","Amiri",serif}
+  /* header */
+  .hero{background:linear-gradient(160deg,#FFFDF6 0%,#F6F2E7 55%,#F1E7CF 100%);
+        border:1px solid var(--line);border-radius:26px;padding:22px 20px 18px;position:relative;overflow:hidden}
+  .hero::after{content:"";position:absolute;inset-inline-end:-40px;top:-40px;width:150px;height:150px;
+        border-radius:50%;background:radial-gradient(circle,rgba(230,0,0,.10),transparent 70%)}
+  .greet{font-size:30px;line-height:1.25;color:var(--ink)}
+  .greet b{color:var(--red);font-weight:700}
+  .dateline{color:var(--muted);font-size:13px;margin-top:6px}
+  .pills{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
+  .pill{background:#fff;border:1px solid var(--line);border-radius:999px;padding:6px 12px;
+        font-size:13px;display:flex;align-items:center;gap:6px}
+  .pill strong{color:var(--red)}
+  /* generic card */
+  .card{background:var(--paper);border:1px solid var(--line);border-radius:22px;
+        padding:18px;margin-top:16px}
+  .card h2{font-size:19px;margin-bottom:4px}
+  .card .sub{color:var(--muted);font-size:13px;margin-bottom:12px}
+  /* setup checklist */
+  .progress{height:8px;background:#EFE8D6;border-radius:99px;overflow:hidden;margin:10px 0 14px}
+  .progress i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .4s}
+  .step{display:flex;align-items:center;gap:12px;padding:11px 2px;border-top:1px dashed var(--line)}
+  .step:first-of-type{border-top:none}
+  .step .box{width:26px;height:26px;border-radius:50%;border:2px solid #D8CFB8;flex:0 0 26px;
+        display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px;background:#fff}
+  .step.done .box{background:var(--red);border-color:var(--red)}
+  .step .t{flex:1}
+  .step .t b{font-size:15px;display:block}
+  .step .t span{color:var(--muted);font-size:12.5px}
+  .chip{background:#FDECEC;color:var(--red);border-radius:999px;font-size:12px;
+        padding:4px 10px;font-weight:700;white-space:nowrap}
+  .chip.gold{background:#FBF3DC;color:var(--gold)}
+  /* action grid */
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .tile{border:1.5px dashed #DCD2B8;border-radius:20px;padding:18px 12px;text-align:center;
+        background:#FFFef9;cursor:pointer;transition:transform .08s}
+  .tile:active{transform:scale(.97)}
+  .tile .ic{font-size:26px;display:block;margin-bottom:8px}
+  .tile b{font-size:15px;display:block}
+  .tile span{color:var(--muted);font-size:12px}
+  /* list rows */
+  .row{display:flex;align-items:center;gap:12px;padding:13px 2px;border-top:1px dashed var(--line);cursor:pointer}
+  .row:first-of-type{border-top:none}
+  .row .n{font-size:20px;font-weight:800;color:var(--ink);min-width:34px;text-align:center}
+  .row .t{flex:1}.row .t b{display:block;font-size:15px}.row .t span{color:var(--muted);font-size:12.5px}
+  .row .go{color:#C9BFA6;font-size:18px}
+  /* levels */
+  .lvl{display:flex;align-items:center;gap:10px;padding:9px 2px;border-top:1px dashed var(--line)}
+  .lvl:first-of-type{border-top:none}
+  .lvl .e{font-size:20px}.lvl b{flex:1;font-size:15px}.lvl span{color:var(--muted);font-size:13px}
+  /* talk button */
+  .talk{position:fixed;top:14px;inset-inline-start:14px;z-index:30;background:var(--red);color:#fff;
+        border:none;border-radius:999px;padding:11px 18px;font-size:15px;font-weight:700;cursor:pointer;
+        box-shadow:0 8px 20px rgba(230,0,0,.30);font-family:inherit}
+  /* bottom nav */
+  .nav{position:fixed;bottom:12px;inset-inline:12px;z-index:30;background:#fff;border:1px solid var(--line);
+       border-radius:999px;display:flex;justify-content:space-around;padding:9px 6px;
+       box-shadow:0 10px 30px rgba(34,29,21,.10)}
+  .nav button{background:none;border:none;font-family:inherit;font-size:11.5px;color:var(--muted);
+       display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:5px 12px;border-radius:999px}
+  .nav button .ic{font-size:19px}
+  .nav button.on{background:#FDECEC;color:var(--red);font-weight:700}
+  .foot{color:var(--muted);font-size:12px;text-align:center;margin-top:18px;line-height:1.9}
+  .foot a{color:var(--red);text-decoration:none;font-weight:700}
+</style>
+</head>
+<body>
+
+<button class="talk" id="talkBtn">💬 كلّم البوت</button>
+
+<section class="hero" id="sec-home">
+  <div class="greet display" id="greet">مساء الخير</div>
+  <div class="dateline" id="dateline"></div>
+  <div class="pills">
+    <div class="pill">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
+    <div class="pill">⭐ نقاطك عند البوت — زر <strong>نقاطي</strong> بالأسفل يعرضها</div>
+  </div>
+</section>
+
+<section class="card" id="sec-setup">
+  <h2 class="display">خلِّ البوت أذكى معك</h2>
+  <div class="sub">خطوات قصيرة ترفع رتبتك وتفتح مميزاتك</div>
+  <div class="progress"><i id="progBar" style="width:25%"></i></div>
+  <div class="sub" id="progText" style="margin:0 0 6px">أكملت ١ من ٤</div>
+  <div class="step" data-step="start"><div class="box">✓</div>
+    <div class="t"><b>ابدأ محادثة مع البوت</b><span>أول خطوة — أنجزتها بفتحك هذه الواجهة</span></div>
+    <div class="chip gold">الأساس</div></div>
+  <div class="step" data-step="ask"><div class="box"></div>
+    <div class="t"><b>اسأل البوت أول سؤال</b><span>أي سؤال عن الذكاء الاصطناعي أو غيره</span></div>
+    <div class="chip">+٢ نقطة</div></div>
+  <div class="step" data-step="invite"><div class="box"></div>
+    <div class="t"><b>ادعُ صديقاً برابطك</b><span>أعلى مكافأة في النظام كله</span></div>
+    <div class="chip">+٢٠ نقطة</div></div>
+  <div class="step" data-step="streak"><div class="box"></div>
+    <div class="t"><b>حافظ على نشاطك اليومي</b><span>أيام متتالية تعني مكافآت إضافية</span></div>
+    <div class="chip">+٥ يومياً</div></div>
+</section>
+
+<section class="card" id="sec-skills">
+  <h2 class="display">مهارات البوت</h2>
+  <div class="sub">أشياء يقدر يسويها لك من المحادثة مباشرة</div>
+  <div class="grid">
+    <div class="tile" data-act="ask"><span class="ic">❓</span><b>اسأل البوت</b><span>جواب فوري مرح</span></div>
+    <div class="tile" data-act="points"><span class="ic">⭐</span><b>نقاطي ورتبتي</b><span>بطاقتك في المحادثة</span></div>
+    <div class="tile" data-act="invite"><span class="ic">🎁</span><b>رابط دعوتي</b><span>شاركه واكسب</span></div>
+    <div class="tile" data-act="ticket"><span class="ic">📩</span><b>طلب للمشرف</b><span>يوصله بنفسه</span></div>
+  </div>
+</section>
+
+<section class="card" id="sec-today">
+  <h2 class="display">اليوم</h2>
+  <div class="sub">روابطك السريعة</div>
+  <div class="row" data-act="points"><div class="n">⭐</div>
+    <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div><div class="go">‹</div></div>
+  <div class="row" data-act="channel"><div class="n">📺</div>
+    <div class="t"><b>القناة</b><span>أخبار الذكاء الاصطناعي أولاً بأول</span></div><div class="go">‹</div></div>
+  <div class="row" data-act="vip"><div class="n">💎</div>
+    <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div><div class="go">‹</div></div>
+</section>
+
+<section class="card" id="sec-levels">
+  <h2 class="display">الرتب والمميزات</h2>
+  <div class="sub">كل ما تجمع أكثر، تصعد أكثر</div>
+  <div class="lvl"><span class="e">🌱</span><b>عضو</b><span>من ٠ نقطة</span></div>
+  <div class="lvl"><span class="e">🔥</span><b>نشيط</b><span>من ١٠٠ — بطاقة ولقب</span></div>
+  <div class="lvl"><span class="e">⭐</span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
+  <div class="lvl"><span class="e">💎</span><b>ذهبي</b><span>من ٧٠٠ — بحث معمق شهرياً</span></div>
+  <div class="lvl"><span class="e">👑</span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
+</section>
+
+<div class="foot">
+  مساعد قناة ومجموعة أخبار الذكاء الاصطناعي<br>
+  <a href="https://t.me/hatmhgr">القناة</a> · المشرف <a href="https://t.me/p5t54">@p5t54</a>
+</div>
+
+<nav class="nav">
+  <button data-nav="sec-home" class="on"><span class="ic">🏠</span>الرئيسية</button>
+  <button data-nav="sec-skills"><span class="ic">🧩</span>المهارات</button>
+  <button data-nav="sec-today"><span class="ic">⭐</span>نقاطي</button>
+  <button data-nav="sec-levels"><span class="ic">💎</span>الرتب</button>
+</nav>
+
+<script>
+(function(){
+  var tg = window.Telegram && window.Telegram.WebApp;
+  if (tg){ tg.ready(); tg.expand(); }
+  var user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
+
+  /* greeting + date */
+  var now = new Date();
+  var h = now.getHours();
+  var greetWord = h < 12 ? "صباح الخير" : "مساء الخير";
+  var first = user && user.first_name ? user.first_name : "";
+  document.getElementById("greet").innerHTML =
+    greetWord + (first ? "، <b>" + first.replace(/[<>&]/g,"") + "</b>" : "");
+  try{
+    document.getElementById("dateline").textContent =
+      now.toLocaleDateString("ar", {weekday:"long", day:"numeric", month:"long"});
+  }catch(e){}
+
+  /* setup checklist — persisted per user in Telegram CloudStorage */
+  var steps = {start:true, ask:false, invite:false, streak:false};
+  function renderSteps(){
+    var done = 0;
+    Object.keys(steps).forEach(function(k){
+      var el = document.querySelector('[data-step="'+k+'"]');
+      if (!el) return;
+      el.classList.toggle("done", !!steps[k]);
+      el.querySelector(".box").textContent = steps[k] ? "✓" : "";
+      if (steps[k]) done++;
+    });
+    document.getElementById("progBar").style.width = (done/4*100) + "%";
+    var ar = ["٠","١","٢","٣","٤"];
+    document.getElementById("progText").textContent =
+      "أكملت " + ar[done] + " من ٤";
+  }
+  function saveSteps(){
+    try{
+      if (tg && tg.CloudStorage){
+        Object.keys(steps).forEach(function(k){
+          tg.CloudStorage.setItem("step_"+k, steps[k] ? "1" : "0");
+        });
+      }
+    }catch(e){}
+  }
+  function loadSteps(){
+    try{
+      if (tg && tg.CloudStorage){
+        Object.keys(steps).forEach(function(k){
+          tg.CloudStorage.getItem("step_"+k, function(err, val){
+            if (!err && val === "1"){ steps[k] = true; renderSteps(); }
+          });
+        });
+      }
+    }catch(e){}
+    renderSteps();
+  }
+  loadSteps();
+
+  function send(action){
+    try{ if (tg) tg.sendData(JSON.stringify({action: action})); }catch(e){}
+  }
+  function openChat(){
+    var link = "https://t.me/htmhgr_helper_bot";
+    if (tg && tg.openTelegramLink) tg.openTelegramLink(link);
+    else window.open(link, "_blank");
+  }
+  function inviteLink(){
+    if (user && user.id) return "https://t.me/htmhgr_helper_bot?start=ref_" + user.id;
+    return "https://t.me/htmhgr_helper_bot";
+  }
+
+  document.getElementById("talkBtn").addEventListener("click", function(){
+    if (tg) tg.close(); else openChat();
+  });
+
+  document.querySelectorAll("[data-act]").forEach(function(el){
+    el.addEventListener("click", function(){
+      var act = el.getAttribute("data-act");
+      if (act === "points"){ send("points"); if (tg) tg.close(); }
+      else if (act === "ask"){ steps.ask = true; saveSteps(); renderSteps(); if (tg) tg.close(); }
+      else if (act === "ticket"){ if (tg) tg.close(); }
+      else if (act === "channel"){ if (tg) tg.openTelegramLink("https://t.me/hatmhgr"); }
+      else if (act === "vip"){ send("vip"); if (tg) tg.close(); }
+      else if (act === "invite"){
+        steps.invite = true; saveSteps(); renderSteps();
+        var link = inviteLink();
+        if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
+        if (tg) tg.showPopup({title:"رابط دعوتك 🎁",
+          message:"انسخ وشارك: " + link,
+          buttons:[{type:"ok", text:"تمام"}]});
+      }
+    });
+  });
+
+  document.querySelectorAll("[data-step]").forEach(function(el){
+    el.addEventListener("click", function(){
+      var k = el.getAttribute("data-step");
+      if (k === "invite"){
+        var link = inviteLink();
+        if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
+        steps.invite = true; saveSteps(); renderSteps();
+        if (tg) tg.showPopup({title:"رابط دعوتك 🎁",
+          message:"انسخ وشارك: " + link, buttons:[{type:"ok", text:"تمام"}]});
+      } else if (k === "ask"){ if (tg) tg.close(); }
+    });
+  });
+
+  document.querySelectorAll("[data-nav]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      document.querySelectorAll("[data-nav]").forEach(function(b){ b.classList.remove("on"); });
+      btn.classList.add("on");
+      var t = document.getElementById(btn.getAttribute("data-nav"));
+      if (t) t.scrollIntoView({behavior:"smooth", block:"start"});
+    });
+  });
+})();
+</script>
+</body>
+</html>
