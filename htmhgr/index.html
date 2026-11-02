@@ -18,151 +18,161 @@
 })();
 </script>
 <style>
-  /* ===== folk design system (cloned 1:1 as Mustafa ordered 2026-11-03;
-     his own identity pass comes later, on his word) ===== */
+  /* ===== v5 — folk's structure, Mustafa's warm identity, pro polish
+     system: 8pt spacing, warm-tinted shadows, spring motion, staggered
+     entrances, grouped cards. (His call 2026-11-03: smooth + tidy + warm) */
   :root{
-    --bg:#F4F4F5; --card:#FFFFFF; --ink:#111214; --muted:#8E8E93;
-    --line:#EBEBEC; --track:#ECECEE;
-    --blue:#1B9AF0; --blue-deep:#1B8CE8; --chip:#E2F0FE;
-    --sky1:#79C4F8; --sky2:#3E9CEC;
+    --bg:#F6F2E7; --card:#FFFDF7; --ink:#262019; --muted:#97897A;
+    --line:#EAE1CF; --track:#EFE7D2;
+    --red:#E60000; --red-deep:#B80000; --chip:#FBEAE8;
+    --grad1:#FF8A50; --grad2:#E60000;
+    --sh-sm:0 3px 10px rgba(122,72,20,.07);
+    --sh-md:0 10px 26px rgba(122,72,20,.10);
+    --ease:cubic-bezier(.22,1,.36,1);
+    --spring:cubic-bezier(.34,1.45,.44,1);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
   body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);
-       min-height:100vh;padding-bottom:112px}
+       min-height:100vh;padding-bottom:118px}
+  .display{font-family:"Aref Ruqaa","Amiri",serif}
   svg.ic{width:22px;height:22px;flex:0 0 22px;stroke:currentColor;fill:none;
          stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
   .view{display:none}
-  .view.on{display:block}
+  .view.on{display:block;animation:vin .38s var(--ease)}
+  @keyframes vin{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+  .view.on .pad>*{animation:rise .55s var(--ease) both}
+  .view.on .pad>*:nth-child(2){animation-delay:.05s}
+  .view.on .pad>*:nth-child(3){animation-delay:.10s}
+  .view.on .pad>*:nth-child(4){animation-delay:.15s}
+  .view.on .pad>*:nth-child(5){animation-delay:.20s}
+  .view.on .pad>*:nth-child(6){animation-delay:.25s}
+  .view.on .pad>*:nth-child(7){animation-delay:.30s}
+  @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   .pad{padding:0 16px}
 
-  /* ---------- home header (sky) ---------- */
-  .sky{background:linear-gradient(180deg,var(--sky1),var(--sky2));
-       padding:14px 16px 26px;border-radius:0 0 28px 28px}
+  /* ---------- header (warm sunset) ---------- */
+  .sky{background:linear-gradient(165deg,var(--grad1),var(--grad2));
+       padding:14px 16px 28px;border-radius:0 0 30px 30px;
+       box-shadow:0 14px 30px rgba(230,0,0,.18)}
   .topbar{display:flex;justify-content:space-between;align-items:center}
-  .talk{background:linear-gradient(180deg,#3FA9F5,var(--blue-deep));color:#fff;border:none;
-        border-radius:999px;cursor:pointer;padding:11px 18px;font-size:15.5px;font-weight:800;
-        font-family:inherit;display:flex;align-items:center;gap:8px;
-        box-shadow:0 8px 18px rgba(27,140,232,.35)}
+  .talk{background:var(--red-deep);color:#fff;border:none;border-radius:999px;cursor:pointer;
+        padding:11px 18px;font-size:15.5px;font-weight:800;font-family:inherit;
+        display:flex;align-items:center;gap:8px;
+        box-shadow:0 8px 18px rgba(120,10,0,.30), inset 0 -3px 0 rgba(0,0,0,.22);
+        transition:transform .12s var(--ease)}
+  .talk:active{transform:scale(.95)}
   .talk svg{width:19px;height:19px;stroke:#fff}
   .brand{background:#fff;border-radius:999px;padding:7px 14px 7px 9px;display:flex;
-         align-items:center;gap:8px;box-shadow:0 4px 12px rgba(20,60,110,.15)}
-  .brand .face{width:26px;height:26px;border-radius:8px;background:#111214;
-       display:flex;align-items:center;justify-content:center}
-  .brand .face svg{width:19px;height:19px;stroke:#fff}
+         align-items:center;gap:8px;box-shadow:0 4px 12px rgba(120,40,0,.18)}
+  .brand .mark{width:24px;height:24px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
+  .brand .mark i{background:var(--red);border-radius:3px}
   .brand b{font-size:16.5px}
-  .greet{color:#fff;font-size:42px;line-height:1.25;font-weight:800;margin-top:22px}
-  .meta{color:rgba(255,255,255,.85);font-size:14px;margin-top:4px;font-weight:600}
+  .greet{color:#fff;font-size:40px;line-height:1.35;font-weight:700;margin-top:22px}
+  .meta{color:rgba(255,255,255,.88);font-size:14px;margin-top:2px;font-weight:600}
   .streak{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--ink);
           border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:700;margin-top:14px;
-          box-shadow:0 4px 12px rgba(20,60,110,.15)}
+          box-shadow:0 4px 12px rgba(120,40,0,.16)}
 
   /* ---------- cards & sections ---------- */
-  .card{background:var(--card);border-radius:26px;padding:20px;margin-top:16px;
-        box-shadow:0 4px 18px rgba(17,18,20,.04)}
-  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
-  .card-h h2,.sec-h h2{font-size:19.5px;font-weight:800}
+  .card{background:var(--card);border-radius:26px;padding:22px;margin-top:18px;box-shadow:var(--sh-md)}
+  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:10px}
+  .card-h h2,.sec-h h2{font-size:21px;font-weight:700}
   .count{color:var(--muted);font-size:13.5px;font-weight:600;white-space:nowrap}
-  .sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:24px 2px 12px}
+  .sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:28px 2px 12px}
   .sec-h .more{color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer}
-  .vtitle{font-size:24px;font-weight:800;padding:20px 2px 4px}
+  .vtitle{font-size:27px;font-weight:700;padding:22px 2px 6px}
+  .hide-link{color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer}
 
   /* segmented progress */
   .segs{display:flex;gap:6px;margin:12px 0 4px}
-  .segs i{flex:1;height:6px;border-radius:99px;background:var(--track)}
-  .segs i.on{background:var(--blue)}
+  .segs i{flex:1;height:6px;border-radius:99px;background:var(--track);transition:background .35s var(--ease)}
+  .segs i.on{background:var(--red);box-shadow:0 2px 8px rgba(230,0,0,.35)}
 
   /* smarter rows */
-  .srow{display:flex;align-items:center;gap:13px;padding:13px 0;border-top:1px solid var(--line)}
+  .srow{display:flex;align-items:center;gap:13px;padding:14px 0;min-height:58px;border-top:1px solid var(--line)}
   .srow .ric{color:var(--ink);display:flex}
   .srow .t{flex:1;min-width:0}
   .srow .t b{display:block;font-size:16px;font-weight:700}
   .srow .t span{color:var(--muted);font-size:13px}
-  .chip{background:var(--chip);color:var(--blue);border-radius:999px;font-size:13px;
-        padding:5px 11px;font-weight:800;white-space:nowrap}
-  .chip.done{background:var(--blue);color:#fff}
+  .chip{background:var(--chip);color:var(--red);border-radius:999px;font-size:13px;
+        padding:5px 11px;font-weight:800;white-space:nowrap;transition:all .3s var(--spring)}
+  .chip.done{background:var(--red);color:#fff}
 
   /* checklist */
   .bar{height:7px;background:var(--track);border-radius:99px;overflow:hidden;margin:12px 0 4px}
-  .bar i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .45s}
-  .crow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer}
+  .bar i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .5s var(--ease)}
+  .crow{display:flex;align-items:center;gap:12px;padding:14px 0;min-height:52px;border-top:1px solid var(--line);cursor:pointer}
   .crow .t{flex:1;font-size:15.5px;font-weight:600}
-  .crow .ck{width:25px;height:25px;flex:0 0 25px;border-radius:50%;border:2px solid #D8D8DC;
-            display:flex;align-items:center;justify-content:center;background:#fff}
+  .crow .ck{width:26px;height:26px;flex:0 0 26px;border-radius:50%;border:2px solid #DCD0B4;
+            display:flex;align-items:center;justify-content:center;background:#fff;
+            transition:all .3s var(--spring)}
   .crow .ck svg{width:13px;height:13px;stroke:#fff;stroke-width:3;fill:none;
             stroke-linecap:round;stroke-linejoin:round}
-  .crow.done .ck{background:var(--blue);border-color:var(--blue)}
+  .crow .ck svg path{stroke-dasharray:24;stroke-dashoffset:24;transition:stroke-dashoffset .35s var(--ease) .05s}
+  .crow.done .ck{background:var(--red);border-color:var(--red);transform:scale(1.08)}
+  .crow.done .ck svg path{stroke-dashoffset:0}
   .crow.done .t{color:var(--muted)}
 
   /* presence card */
   .presence{display:flex;align-items:center;gap:13px}
-  .presence .avatar{width:52px;height:52px;flex:0 0 52px;border-radius:16px;background:#111214;
+  .presence .avatar{width:52px;height:52px;flex:0 0 52px;border-radius:16px;background:var(--ink);
        display:flex;align-items:center;justify-content:center}
   .presence .avatar svg{width:34px;height:34px;stroke:#fff}
   .presence .t{flex:1}
   .presence .t b{display:block;font-size:17px}
   .presence .t span{color:var(--muted);font-size:13.5px;display:flex;align-items:center;gap:6px}
-  .presence .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block}
+  .presence .dot{width:8px;height:8px;border-radius:50%;background:var(--red);display:inline-block;
+       animation:pulse 2s infinite}
+  @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 
   /* dashed tiles */
   .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .tile{background:var(--card);border:1.5px dashed #D9D9DD;border-radius:24px;
-        padding:24px 10px 20px;text-align:center;cursor:pointer;transition:transform .08s}
-  .tile:active{transform:scale(.97)}
-  .tile .tic{width:46px;height:46px;margin:0 auto 10px;border-radius:50%;background:var(--bg);
+  .tile{background:var(--card);border:1.5px dashed #DCD0B4;border-radius:24px;
+        padding:26px 10px 22px;text-align:center;cursor:pointer;
+        transition:transform .12s var(--ease);box-shadow:var(--sh-sm)}
+  .tile:active{transform:scale(.96)}
+  .tile .tic{width:48px;height:48px;margin:0 auto 10px;border-radius:50%;background:var(--bg);
              display:flex;align-items:center;justify-content:center;color:var(--ink)}
-  .tile b{display:block;font-size:15.5px;font-weight:700;color:#3A3A3E}
+  .tile b{display:block;font-size:15.5px;font-weight:700}
   .tile span{color:var(--muted);font-size:12.5px}
-  .wide{grid-column:1/-1;display:flex;align-items:center;gap:14px;text-align:start;padding:18px}
+  .wide{grid-column:1/-1;display:flex;align-items:center;gap:14px;text-align:start;padding:20px}
   .wide .tic{margin:0}
-  .wide .t{flex:1}.wide .t b{font-size:16px;color:var(--ink)}
+  .wide .t{flex:1}.wide .t b{font-size:16px}
   .wide .plus{width:42px;height:42px;flex:0 0 42px;border-radius:50%;background:#fff;
-              box-shadow:0 4px 14px rgba(17,18,20,.10);display:flex;align-items:center;justify-content:center}
+              box-shadow:var(--sh-md);display:flex;align-items:center;justify-content:center}
   .wide .plus svg{width:19px;height:19px}
 
-  /* plain rows */
-  .row{display:flex;align-items:center;gap:13px;padding:14px 2px;border-top:1px solid var(--line);cursor:pointer}
+  /* plain rows (inside group cards) */
+  .row{display:flex;align-items:center;gap:13px;padding:15px 0;min-height:58px;border-top:1px solid var(--line);cursor:pointer;
+       transition:transform .1s var(--ease)}
+  .row:active{transform:scale(.98)}
   .row .ric{color:var(--ink);display:flex}
   .row .t{flex:1}.row .t b{display:block;font-size:16px;font-weight:700}
   .row .t span{color:var(--muted);font-size:13px}
   .row .num{font-size:19px;font-weight:800}
-  .row .go{color:#C9C9CD;font-size:19px}
+  .row .go{color:#D3C6A6;font-size:19px}
+  .group{padding-top:8px;padding-bottom:8px}
+  .group .row:first-child,.group .srow:first-child{border-top:none}
 
   /* levels */
-  .lvl{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
+  .lvl{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
   .lvl .d{width:11px;height:11px;border-radius:50%;flex:0 0 11px}
   .lvl b{flex:1;font-size:15.5px}
   .lvl span{color:var(--muted);font-size:13px}
 
-  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px;line-height:2}
-  .foot a{color:var(--blue);text-decoration:none;font-weight:700}
+  .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px;line-height:2}
+  .foot a{color:var(--red);text-decoration:none;font-weight:700}
 
   /* bottom nav */
-  .nav{position:fixed;bottom:14px;inset-inline:12px;z-index:30;background:#fff;border-radius:999px;
-       display:flex;justify-content:space-around;padding:7px;
-       box-shadow:0 14px 34px rgba(17,18,20,.13)}
+  .nav{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom));inset-inline:12px;z-index:30;
+       background:#fff;border-radius:999px;display:flex;justify-content:space-around;padding:7px;
+       box-shadow:0 16px 36px rgba(122,72,20,.16)}
   .nav button{background:none;border:none;font-family:inherit;font-size:10.5px;color:var(--muted);
        display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
-       padding:7px 12px;border-radius:999px}
-  .nav button svg{width:21px;height:21px}
-  .nav button.on{background:var(--chip);color:var(--blue);font-weight:800}
-
-  /* ===== motion & depth (v4, per the analysis spec) ===== */
-  .talk{box-shadow:0 8px 18px rgba(27,140,232,.35), inset 0 -3px 0 rgba(15,90,160,.45);
-        transition:transform .12s}
-  .talk:active{transform:scale(.96)}
-  .tile,.row{transition:transform .1s}
-  .tile:active,.row:active{transform:scale(.98)}
-  .view.on{animation:vin .32s cubic-bezier(.2,.8,.25,1)}
-  @keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-  .card{animation:rise .45s cubic-bezier(.2,.8,.25,1) both}
-  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-  .segs i{transition:background .3s}
-  .crow .ck{transition:background .25s,border-color .25s,transform .25s}
-  .crow.done .ck{transform:scale(1.07)}
-  .chip{transition:background .25s,color .25s}
-  .nav button{transition:background .25s,color .25s}
-  .hide-link{color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer}
-  #setupBody{transition:opacity .25s}
+       padding:7px 12px;border-radius:999px;transition:all .3s var(--ease)}
+  .nav button svg{width:21px;height:21px;transition:transform .3s var(--spring)}
+  .nav button.on{background:var(--chip);color:var(--red);font-weight:800}
+  .nav button.on svg{transform:translateY(-1px) scale(1.08)}
 </style>
 </head>
 <body>
@@ -176,19 +186,24 @@
         كلّم البوت
       </button>
       <div class="brand">
-        <span class="face"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
+        <span class="mark"><i></i><i></i><i></i><i></i></span>
         <b>HTMHGR</b>
       </div>
     </div>
-    <div class="greet" id="greet">مساء الخير.</div>
+    <div class="greet display" id="greet">مساء الخير.</div>
     <div class="meta"><span id="dateline"></span><span id="wx"></span></div>
     <div class="streak">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
   </div>
 
   <div class="pad">
+    <section class="card presence">
+      <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
+      <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
+    </section>
+
     <section class="card">
       <div class="card-h">
-        <h2>خلِّ البوت أذكى معك</h2>
+        <h2 class="display">خلِّ البوت أذكى معك</h2>
         <span class="count" id="progText">أكملت ١ من ٤</span>
       </div>
       <div class="segs" id="segWrap"><i></i><i></i><i></i><i></i></div>
@@ -216,25 +231,20 @@
 
     <section class="card">
       <div class="card-h">
-        <h2>إعداد حسابك</h2>
+        <h2 class="display">إعداد حسابك</h2>
         <span><span class="hide-link" id="hideSetup">إخفاء</span> · <span class="count" id="setupText">أكملت ١ من ٤</span></span>
       </div>
       <div id="setupBody">
-      <div class="bar"><i id="setupBar" style="width:25%"></i></div>
-      <div class="crow" data-step="start"><span class="t">افتح واجهة البوت</span><span class="ck"></span></div>
-      <div class="crow" data-step="ask"><span class="t">اسأل البوت أول سؤال</span><span class="ck"></span></div>
-      <div class="crow" data-step="invite"><span class="t">ادعُ صديقاً برابطك</span><span class="ck"></span></div>
-      <div class="crow" data-step="streak"><span class="t">ارجع غداً وحافظ على سلسلتك</span><span class="ck"></span></div>
+        <div class="bar"><i id="setupBar" style="width:25%"></i></div>
+        <div class="crow" data-step="start"><span class="t">افتح واجهة البوت</span><span class="ck"></span></div>
+        <div class="crow" data-step="ask"><span class="t">اسأل البوت أول سؤال</span><span class="ck"></span></div>
+        <div class="crow" data-step="invite"><span class="t">ادعُ صديقاً برابطك</span><span class="ck"></span></div>
+        <div class="crow" data-step="streak"><span class="t">ارجع غداً وحافظ على سلسلتك</span><span class="ck"></span></div>
       </div>
     </section>
 
-    <section class="card presence">
-      <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
-      <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
-    </section>
-
     <div class="sec-h">
-      <h2>أدواتك</h2>
+      <h2 class="display">أدواتك</h2>
       <span class="more" data-goto="view-skills">كل المهارات ←</span>
     </div>
     <div class="tiles">
@@ -249,7 +259,7 @@
     </div>
 
     <div class="sec-h">
-      <h2>مهاراتك</h2>
+      <h2 class="display">مهاراتك</h2>
       <span class="more" data-goto="view-skills">تصفح الكل ←</span>
     </div>
     <div class="tiles">
@@ -261,9 +271,9 @@
     </div>
 
     <div class="sec-h">
-      <h2>اليوم</h2>
+      <h2 class="display">اليوم</h2>
     </div>
-    <div>
+    <section class="card group" style="margin-top:0">
       <div class="row" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
         <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div>
@@ -279,16 +289,16 @@
         <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div>
         <span class="go">‹</span>
       </div>
-    </div>
+    </section>
   </div>
 </div>
 
 <!-- ================= SKILLS ================= -->
 <div class="view" id="view-skills">
   <div class="pad">
-    <div class="vtitle">مهاراتك</div>
-    <section class="card" style="margin-top:10px">
-      <div class="srow" data-act="ask" style="border-top:none">
+    <div class="vtitle display">مهاراتك</div>
+    <section class="card group" style="margin-top:6px">
+      <div class="srow" data-act="ask">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></span>
         <div class="t"><b>اسأل البوت</b><span>جواب فوري مرح على أي سؤال</span></div>
         <span class="chip">+٢</span>
@@ -322,8 +332,8 @@
 <!-- ================= CHARACTERS ================= -->
 <div class="view" id="view-characters">
   <div class="pad">
-    <div class="vtitle">مساعدك</div>
-    <section class="card presence" style="margin-top:10px">
+    <div class="vtitle display">مساعدك</div>
+    <section class="card presence" style="margin-top:6px">
       <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
       <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
     </section>
@@ -337,9 +347,9 @@
         <b>اطلب بحثاً</b>
       </div>
     </div>
-    <section class="card">
-      <div class="card-h"><h2>كيف يشتغل؟</h2></div>
-      <div class="srow" style="border-top:none">
+    <section class="card group">
+      <div class="card-h"><h2 class="display">كيف يشتغل؟</h2></div>
+      <div class="srow">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
         <div class="t"><b>اسأله في المجموعة أو الخاص</b><span>يرد عليك خلال ثوانٍ</span></div>
       </div>
@@ -354,9 +364,9 @@
 <!-- ================= FEED ================= -->
 <div class="view" id="view-feed">
   <div class="pad">
-    <div class="vtitle">النشاط</div>
-    <div>
-      <div class="row" data-act="points" style="border-top:none">
+    <div class="vtitle display">النشاط</div>
+    <section class="card group" style="margin-top:6px">
+      <div class="row" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
         <div class="t"><b>نشاطي</b><span>أشياء كسبتها مع البوت</span></div>
         <span class="go">‹</span>
@@ -376,16 +386,16 @@
         <div class="t"><b>المكافآت</b><span>أعلى مكافأة: دعوة صديق</span></div>
         <span class="go">‹</span>
       </div>
-    </div>
+    </section>
   </div>
 </div>
 
 <!-- ================= MENU ================= -->
 <div class="view" id="view-menu">
   <div class="pad">
-    <div class="vtitle">القائمة</div>
-    <section class="card" style="margin-top:10px;padding-top:8px;padding-bottom:8px">
-      <div class="row" data-act="points" style="border-top:none">
+    <div class="vtitle display">القائمة</div>
+    <section class="card group" style="margin-top:6px">
+      <div class="row" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
         <div class="t"><b>نقاطي ورتبتي</b></div><span class="go">‹</span>
       </div>
@@ -403,14 +413,14 @@
       </div>
     </section>
 
-    <div class="sec-h"><h2>الرتب والمميزات</h2></div>
-    <div>
+    <div class="sec-h"><h2 class="display">الرتب والمميزات</h2></div>
+    <section class="card group" style="margin-top:0">
       <div class="lvl" style="border-top:none"><span class="d" style="background:#9DBE8C"></span><b>عضو</b><span>من ٠ نقطة</span></div>
       <div class="lvl"><span class="d" style="background:#E8A13A"></span><b>نشيط</b><span>من ١٠٠ — بطاقة ولقب</span></div>
-      <div class="lvl"><span class="d" style="background:#1B9AF0"></span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
+      <div class="lvl"><span class="d" style="background:#E60000"></span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
       <div class="lvl"><span class="d" style="background:#C9962E"></span><b>ذهبي</b><span>من ٧٠٠ — بحث معمق شهرياً</span></div>
-      <div class="lvl"><span class="d" style="background:#111214"></span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
-    </div>
+      <div class="lvl"><span class="d" style="background:#262019"></span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
+    </section>
 
     <div class="foot">
       مساعد قناة ومجموعة أخبار الذكاء الاصطناعي<br>
@@ -492,7 +502,7 @@
 
   /* setup state — Telegram CloudStorage with localStorage fallback */
   var steps = {start:true, ask:false, invite:false, streak:false};
-  var CHECK = '<svg viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6.5"/></svg>';
+  var CHECK = '<svg viewBox="0 0 24 24"><path pathLength="24" d="M4 12.5 9.5 18 20 6.5"/></svg>';
   function renderSteps(){
     var done = 0;
     Object.keys(steps).forEach(function(k){ if (steps[k]) done++; });
