@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>واجهة بوت HTMHGR</title>
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script async src="https://telegram.org/js/telegram-web-app.js" onload="window.__tgInit&&window.__tgInit()"></script>
 <style>
   :root{
     --cream:#F6F2E7; --paper:#FFFDF6; --ink:#221D15; --red:#E60000;
@@ -157,17 +157,31 @@
 
 <script>
 (function(){
-  var tg = window.Telegram && window.Telegram.WebApp;
-  if (tg){ tg.ready(); tg.expand(); }
-  var user = (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
+  /* The Telegram bridge script loads async (a slow telegram.org must
+     never block first paint on weak connections). Everything renders
+     immediately without it; when it arrives, __tgInit binds it. */
+  var tg = null;
+  var user = null;
+  function renderGreet(){
+    var now = new Date();
+    var greetWord = now.getHours() < 12 ? "صباح الخير" : "مساء الخير";
+    var first = user && user.first_name ? user.first_name : "";
+    document.getElementById("greet").innerHTML =
+      greetWord + (first ? "، <b>" + first.replace(/[<>&]/g,"") + "</b>" : "");
+  }
+  function bindTg(){
+    tg = window.Telegram && window.Telegram.WebApp;
+    if (!tg) return;
+    try{ tg.ready(); tg.expand(); }catch(e){}
+    user = (tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
+    renderGreet();
+    loadSteps();
+  }
+  window.__tgInit = bindTg;
 
   /* greeting + date */
   var now = new Date();
-  var h = now.getHours();
-  var greetWord = h < 12 ? "صباح الخير" : "مساء الخير";
-  var first = user && user.first_name ? user.first_name : "";
-  document.getElementById("greet").innerHTML =
-    greetWord + (first ? "، <b>" + first.replace(/[<>&]/g,"") + "</b>" : "");
+  renderGreet();
   try{
     document.getElementById("dateline").textContent =
       now.toLocaleDateString("ar", {weekday:"long", day:"numeric", month:"long"});
@@ -191,26 +205,27 @@
   }
   function saveSteps(){
     try{
-      if (tg && tg.CloudStorage){
-        Object.keys(steps).forEach(function(k){
-          tg.CloudStorage.setItem("step_"+k, steps[k] ? "1" : "0");
-        });
-      }
+      Object.keys(steps).forEach(function(k){
+        try{ localStorage.setItem("step_"+k, steps[k] ? "1" : "0"); }catch(e){}
+        if (tg && tg.CloudStorage) tg.CloudStorage.setItem("step_"+k, steps[k] ? "1" : "0");
+      });
     }catch(e){}
   }
   function loadSteps(){
     try{
-      if (tg && tg.CloudStorage){
-        Object.keys(steps).forEach(function(k){
+      Object.keys(steps).forEach(function(k){
+        try{ if (localStorage.getItem("step_"+k) === "1") steps[k] = true; }catch(e){}
+        if (tg && tg.CloudStorage){
           tg.CloudStorage.getItem("step_"+k, function(err, val){
             if (!err && val === "1"){ steps[k] = true; renderSteps(); }
           });
-        });
-      }
+        }
+      });
     }catch(e){}
     renderSteps();
   }
   loadSteps();
+  bindTg();
 
   function send(action){
     try{ if (tg) tg.sendData(JSON.stringify({action: action})); }catch(e){}
