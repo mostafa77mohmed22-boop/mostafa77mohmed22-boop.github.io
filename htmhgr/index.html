@@ -5,6 +5,19 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>واجهة بوت HTMHGR</title>
 <script async src="https://telegram.org/js/telegram-web-app.js" onload="window.__tgInit&&window.__tgInit()"></script>
+<script>
+/* Telegram keeps its native loading placeholder up until the app calls
+   WebApp.ready() (documented developer pitfall: "app stuck on loading
+   spinner -> call tg.ready()"). Poll for the bridge and call ready()
+   the instant it exists, independent of the main script below. */
+(function(){
+  var p = setInterval(function(){
+    var w = window.Telegram && window.Telegram.WebApp;
+    if (w){ try{ w.ready(); }catch(e){} clearInterval(p); }
+  }, 50);
+  setTimeout(function(){ clearInterval(p); }, 10000);
+})();
+</script>
 <style>
   :root{
     --cream:#F6F2E7; --paper:#FFFDF6; --ink:#221D15; --red:#E60000;
