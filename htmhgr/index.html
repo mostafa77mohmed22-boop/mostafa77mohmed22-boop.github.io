@@ -18,252 +18,393 @@
 })();
 </script>
 <style>
+  /* ===== folk design system (cloned 1:1 as Mustafa ordered 2026-11-03;
+     his own identity pass comes later, on his word) ===== */
   :root{
-    --cream:#F6F2E7; --paper:#FFFDF8; --ink:#211C12; --red:#E60000;
-    --red-soft:#FDECEA; --muted:#8A8172; --line:#E9E1CE; --track:#EFE7D3;
+    --bg:#F4F4F5; --card:#FFFFFF; --ink:#111214; --muted:#8E8E93;
+    --line:#EBEBEC; --track:#ECECEE;
+    --blue:#1B9AF0; --blue-deep:#1B8CE8; --chip:#E2F0FE;
+    --sky1:#79C4F8; --sky2:#3E9CEC;
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  html{scroll-behavior:smooth}
-  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--cream);color:var(--ink);
-       padding:0 18px 118px;min-height:100vh}
-  .display{font-family:"Aref Ruqaa","Amiri",serif}
+  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);
+       min-height:100vh;padding-bottom:112px}
   svg.ic{width:22px;height:22px;flex:0 0 22px;stroke:currentColor;fill:none;
          stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+  .view{display:none}
+  .view.on{display:block}
+  .pad{padding:0 16px}
 
-  /* ---------- header ---------- */
-  .topbar{display:flex;justify-content:space-between;align-items:center;padding:16px 0 4px}
-  .talk{background:var(--red);color:#fff;border:none;border-radius:999px;cursor:pointer;
-        padding:11px 18px;font-size:15.5px;font-weight:800;font-family:inherit;
-        display:flex;align-items:center;gap:8px;box-shadow:0 10px 22px rgba(230,0,0,.28)}
+  /* ---------- home header (sky) ---------- */
+  .sky{background:linear-gradient(180deg,var(--sky1),var(--sky2));
+       padding:14px 16px 26px;border-radius:0 0 28px 28px}
+  .topbar{display:flex;justify-content:space-between;align-items:center}
+  .talk{background:linear-gradient(180deg,#3FA9F5,var(--blue-deep));color:#fff;border:none;
+        border-radius:999px;cursor:pointer;padding:11px 18px;font-size:15.5px;font-weight:800;
+        font-family:inherit;display:flex;align-items:center;gap:8px;
+        box-shadow:0 8px 18px rgba(27,140,232,.35)}
   .talk svg{width:19px;height:19px;stroke:#fff}
-  .brand{background:#fff;border-radius:999px;padding:8px 14px 8px 10px;display:flex;
-         align-items:center;gap:8px;box-shadow:0 4px 14px rgba(34,29,21,.08)}
-  .brand .mark{width:24px;height:24px;display:grid;grid-template-columns:1fr 1fr;gap:2px}
-  .brand .mark i{background:var(--red);border-radius:3px}
-  .brand b{font-size:16.5px;letter-spacing:.2px}
-  .hero{padding:20px 2px 6px}
-  .greet{font-size:41px;line-height:1.3;font-weight:700}
-  .greet b{color:var(--red)}
-  .greet .dot{color:var(--red)}
-  .meta{color:var(--muted);font-size:14px;margin-top:2px}
-  .streak{display:inline-flex;align-items:center;gap:7px;background:#fff;border-radius:999px;
-          padding:8px 14px;font-size:13.5px;font-weight:700;margin-top:14px;
-          box-shadow:0 4px 14px rgba(34,29,21,.07)}
+  .brand{background:#fff;border-radius:999px;padding:7px 14px 7px 9px;display:flex;
+         align-items:center;gap:8px;box-shadow:0 4px 12px rgba(20,60,110,.15)}
+  .brand .face{width:26px;height:26px;border-radius:8px;background:#111214;
+       display:flex;align-items:center;justify-content:center}
+  .brand .face svg{width:19px;height:19px;stroke:#fff}
+  .brand b{font-size:16.5px}
+  .greet{color:#fff;font-size:42px;line-height:1.25;font-weight:800;margin-top:22px}
+  .meta{color:rgba(255,255,255,.85);font-size:14px;margin-top:4px;font-weight:600}
+  .streak{display:inline-flex;align-items:center;gap:7px;background:#fff;color:var(--ink);
+          border-radius:999px;padding:8px 14px;font-size:13.5px;font-weight:700;margin-top:14px;
+          box-shadow:0 4px 12px rgba(20,60,110,.15)}
 
   /* ---------- cards & sections ---------- */
-  .card{background:var(--paper);border-radius:26px;padding:20px;margin-top:20px;
-        box-shadow:0 6px 24px rgba(34,29,21,.05)}
-  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:6px}
-  .card-h h2{font-size:19.5px;font-weight:800}
+  .card{background:var(--card);border-radius:26px;padding:20px;margin-top:16px;
+        box-shadow:0 4px 18px rgba(17,18,20,.04)}
+  .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px}
+  .card-h h2,.sec-h h2{font-size:19.5px;font-weight:800}
   .count{color:var(--muted);font-size:13.5px;font-weight:600;white-space:nowrap}
-  .sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:26px 2px 12px}
-  .sec-h h2{font-size:20px;font-weight:800}
+  .sec-h{display:flex;justify-content:space-between;align-items:baseline;margin:24px 2px 12px}
   .sec-h .more{color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer}
+  .vtitle{font-size:24px;font-weight:800;padding:20px 2px 4px}
 
   /* segmented progress */
-  .segs{display:flex;gap:6px;margin:12px 0 6px}
+  .segs{display:flex;gap:6px;margin:12px 0 4px}
   .segs i{flex:1;height:6px;border-radius:99px;background:var(--track)}
-  .segs i.on{background:var(--red)}
+  .segs i.on{background:var(--blue)}
 
-  /* setup rows */
+  /* smarter rows */
   .srow{display:flex;align-items:center;gap:13px;padding:13px 0;border-top:1px solid var(--line)}
-  .srow:first-of-type{border-top:none}
-  .srow .ric{width:40px;height:40px;flex:0 0 40px;border-radius:50%;background:var(--cream);
-             display:flex;align-items:center;justify-content:center;color:var(--ink)}
-  .srow .ric svg{width:21px;height:21px}
+  .srow .ric{color:var(--ink);display:flex}
   .srow .t{flex:1;min-width:0}
   .srow .t b{display:block;font-size:16px;font-weight:700}
   .srow .t span{color:var(--muted);font-size:13px}
-  .chip{background:var(--red-soft);color:var(--red);border-radius:999px;font-size:13px;
+  .chip{background:var(--chip);color:var(--blue);border-radius:999px;font-size:13px;
         padding:5px 11px;font-weight:800;white-space:nowrap}
-  .chip.done{background:var(--red);color:#fff}
+  .chip.done{background:var(--blue);color:#fff}
 
   /* checklist */
   .bar{height:7px;background:var(--track);border-radius:99px;overflow:hidden;margin:12px 0 4px}
-  .bar i{display:block;height:100%;background:var(--red);border-radius:99px;transition:width .45s}
+  .bar i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .45s}
   .crow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);cursor:pointer}
-  .crow:first-of-type{border-top:none}
-  .crow .ck{width:25px;height:25px;flex:0 0 25px;border-radius:50%;border:2px solid #D9CFB6;
-            display:flex;align-items:center;justify-content:center;background:#fff}
-  .crow .ck svg{width:13px;height:13px;stroke:#fff;stroke-width:3}
-  .crow.done .ck{background:var(--red);border-color:var(--red)}
   .crow .t{flex:1;font-size:15.5px;font-weight:600}
+  .crow .ck{width:25px;height:25px;flex:0 0 25px;border-radius:50%;border:2px solid #D8D8DC;
+            display:flex;align-items:center;justify-content:center;background:#fff}
+  .crow .ck svg{width:13px;height:13px;stroke:#fff;stroke-width:3;fill:none;
+            stroke-linecap:round;stroke-linejoin:round}
+  .crow.done .ck{background:var(--blue);border-color:var(--blue)}
   .crow.done .t{color:var(--muted)}
 
-  /* skill tiles */
+  /* presence card */
+  .presence{display:flex;align-items:center;gap:13px}
+  .presence .avatar{width:52px;height:52px;flex:0 0 52px;border-radius:16px;background:#111214;
+       display:flex;align-items:center;justify-content:center}
+  .presence .avatar svg{width:34px;height:34px;stroke:#fff}
+  .presence .t{flex:1}
+  .presence .t b{display:block;font-size:17px}
+  .presence .t span{color:var(--muted);font-size:13.5px;display:flex;align-items:center;gap:6px}
+  .presence .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);display:inline-block}
+
+  /* dashed tiles */
   .tiles{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  .tile{background:var(--paper);border:1.5px dashed #DCD2B8;border-radius:24px;padding:22px 10px 18px;
-        text-align:center;cursor:pointer;transition:transform .08s}
+  .tile{background:var(--card);border:1.5px dashed #D9D9DD;border-radius:24px;
+        padding:24px 10px 20px;text-align:center;cursor:pointer;transition:transform .08s}
   .tile:active{transform:scale(.97)}
-  .tile .tic{width:46px;height:46px;margin:0 auto 10px;border-radius:50%;background:var(--cream);
+  .tile .tic{width:46px;height:46px;margin:0 auto 10px;border-radius:50%;background:var(--bg);
              display:flex;align-items:center;justify-content:center;color:var(--ink)}
-  .tile b{display:block;font-size:15.5px;font-weight:700}
+  .tile b{display:block;font-size:15.5px;font-weight:700;color:#3A3A3E}
   .tile span{color:var(--muted);font-size:12.5px}
   .wide{grid-column:1/-1;display:flex;align-items:center;gap:14px;text-align:start;padding:18px}
   .wide .tic{margin:0}
-  .wide .t{flex:1}.wide .t b{font-size:16px}
+  .wide .t{flex:1}.wide .t b{font-size:16px;color:var(--ink)}
   .wide .plus{width:42px;height:42px;flex:0 0 42px;border-radius:50%;background:#fff;
-              box-shadow:0 4px 14px rgba(34,29,21,.10);display:flex;align-items:center;justify-content:center}
+              box-shadow:0 4px 14px rgba(17,18,20,.10);display:flex;align-items:center;justify-content:center}
   .wide .plus svg{width:19px;height:19px}
 
   /* plain rows */
   .row{display:flex;align-items:center;gap:13px;padding:14px 2px;border-top:1px solid var(--line);cursor:pointer}
-  .row:first-of-type{border-top:none}
   .row .ric{color:var(--ink);display:flex}
   .row .t{flex:1}.row .t b{display:block;font-size:16px;font-weight:700}
   .row .t span{color:var(--muted);font-size:13px}
   .row .num{font-size:19px;font-weight:800}
-  .row .go{color:#C6BBA0;font-size:19px}
+  .row .go{color:#C9C9CD;font-size:19px}
 
   /* levels */
   .lvl{display:flex;align-items:center;gap:12px;padding:11px 0;border-top:1px solid var(--line)}
-  .lvl:first-of-type{border-top:none}
   .lvl .d{width:11px;height:11px;border-radius:50%;flex:0 0 11px}
   .lvl b{flex:1;font-size:15.5px}
   .lvl span{color:var(--muted);font-size:13px}
 
   .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:26px;line-height:2}
-  .foot a{color:var(--red);text-decoration:none;font-weight:700}
+  .foot a{color:var(--blue);text-decoration:none;font-weight:700}
 
   /* bottom nav */
-  .nav{position:fixed;bottom:14px;inset-inline:14px;z-index:30;background:#fff;border-radius:999px;
-       display:flex;justify-content:space-around;padding:8px;
-       box-shadow:0 14px 34px rgba(34,29,21,.14)}
-  .nav button{background:none;border:none;font-family:inherit;font-size:11px;color:var(--muted);
+  .nav{position:fixed;bottom:14px;inset-inline:12px;z-index:30;background:#fff;border-radius:999px;
+       display:flex;justify-content:space-around;padding:7px;
+       box-shadow:0 14px 34px rgba(17,18,20,.13)}
+  .nav button{background:none;border:none;font-family:inherit;font-size:10.5px;color:var(--muted);
        display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;
-       padding:7px 15px;border-radius:999px}
+       padding:7px 12px;border-radius:999px}
   .nav button svg{width:21px;height:21px}
-  .nav button.on{background:var(--red-soft);color:var(--red);font-weight:800}
+  .nav button.on{background:var(--chip);color:var(--blue);font-weight:800}
 </style>
 </head>
 <body>
 
-<div class="topbar" id="sec-home">
-  <button class="talk" id="talkBtn">
-    <svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg>
-    كلّم البوت
-  </button>
-  <div class="brand">
-    <span class="mark"><i></i><i></i><i></i><i></i></span>
-    <b>HTMHGR</b>
+<!-- ================= HOME ================= -->
+<div class="view on" id="view-home">
+  <div class="sky">
+    <div class="topbar">
+      <button class="talk" id="talkBtn">
+        <svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg>
+        كلّم البوت
+      </button>
+      <div class="brand">
+        <span class="face"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
+        <b>HTMHGR</b>
+      </div>
+    </div>
+    <div class="greet" id="greet">مساء الخير.</div>
+    <div class="meta" id="dateline"></div>
+    <div class="streak">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
+  </div>
+
+  <div class="pad">
+    <section class="card">
+      <div class="card-h">
+        <h2>خلِّ البوت أذكى معك</h2>
+        <span class="count" id="progText">أكملت ١ من ٤</span>
+      </div>
+      <div class="segs" id="segWrap"><i></i><i></i><i></i><i></i></div>
+      <div class="srow" data-step="start">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
+        <div class="t"><b>ابدأ محادثة مع البوت</b><span>أول خطوة — أنجزتها بفتحك هذه الواجهة</span></div>
+        <span class="chip" data-chip="start">الأساس</span>
+      </div>
+      <div class="srow" data-step="ask">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M9.6 15.6 12 3l2.4 12.6M6 21l1.2-5.4M18 21l-1.2-5.4M7.6 11h8.8"/></svg></span>
+        <div class="t"><b>اسأل البوت أول سؤال</b><span>أي سؤال عن الذكاء الاصطناعي أو غيره</span></div>
+        <span class="chip" data-chip="ask">+٢</span>
+      </div>
+      <div class="srow" data-step="invite">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4.5.2-4.5-2.3C7.5 3.4 11 3.6 12 8zM12 8s4.5.2 4.5-2.3C16.5 3.4 13 3.6 12 8z"/></svg></span>
+        <div class="t"><b>ادعُ صديقاً برابطك</b><span>أعلى مكافأة في النظام كله</span></div>
+        <span class="chip" data-chip="invite">+٢٠</span>
+      </div>
+      <div class="srow" data-step="streak">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></span>
+        <div class="t"><b>حافظ على نشاطك اليومي</b><span>أيام متتالية تعني مكافآت إضافية</span></div>
+        <span class="chip" data-chip="streak">+٥</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <div class="card-h">
+        <h2>إعداد حسابك</h2>
+        <span class="count" id="setupText">أكملت ١ من ٤</span>
+      </div>
+      <div class="bar"><i id="setupBar" style="width:25%"></i></div>
+      <div class="crow" data-step="start"><span class="t">افتح واجهة البوت</span><span class="ck"></span></div>
+      <div class="crow" data-step="ask"><span class="t">اسأل البوت أول سؤال</span><span class="ck"></span></div>
+      <div class="crow" data-step="invite"><span class="t">ادعُ صديقاً برابطك</span><span class="ck"></span></div>
+      <div class="crow" data-step="streak"><span class="t">ارجع غداً وحافظ على سلسلتك</span><span class="ck"></span></div>
+    </section>
+
+    <section class="card presence">
+      <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
+      <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
+    </section>
+
+    <div class="sec-h">
+      <h2>أدواتك</h2>
+      <span class="more" data-goto="view-skills">كل المهارات ←</span>
+    </div>
+    <div class="tiles">
+      <div class="tile" data-act="ask">
+        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2z"/></svg></span>
+        <b>اكتشف</b>
+      </div>
+      <div class="tile" data-act="ticket">
+        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+        <b>اطلب شيئاً</b>
+      </div>
+    </div>
+
+    <div class="sec-h">
+      <h2>مهاراتك</h2>
+      <span class="more" data-goto="view-skills">تصفح الكل ←</span>
+    </div>
+    <div class="tiles">
+      <div class="tile wide" data-act="invite">
+        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span>
+        <div class="t"><b>أضف صديقاً</b><span>أشياء يكسبها لك البوت بدعوة واحدة. ابدأ اليوم</span></div>
+        <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+      </div>
+    </div>
+
+    <div class="sec-h">
+      <h2>اليوم</h2>
+    </div>
+    <div>
+      <div class="row" data-act="points">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
+        <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div>
+        <span class="go">‹</span>
+      </div>
+      <div class="row" data-act="channel">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg></span>
+        <div class="t"><b>القناة</b><span>أخبار الذكاء الاصطناعي أولاً بأول</span></div>
+        <span class="go">‹</span>
+      </div>
+      <div class="row" data-act="vip">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18M9.5 3 8 9l4 12M14.5 3 16 9l-4 12"/></svg></span>
+        <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div>
+        <span class="go">‹</span>
+      </div>
+    </div>
   </div>
 </div>
 
-<header class="hero">
-  <div class="greet display" id="greet">مساء الخير<span class="dot">.</span></div>
-  <div class="meta" id="dateline"></div>
-  <div class="streak">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
-</header>
-
-<section class="card">
-  <div class="card-h">
-    <h2 class="display">خلِّ البوت أذكى معك</h2>
-    <span class="count" id="progText">أكملت ١ من ٤</span>
-  </div>
-  <div class="segs" id="segWrap"><i></i><i></i><i></i><i></i></div>
-
-  <div class="srow" data-step="start">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
-    <div class="t"><b>ابدأ محادثة مع البوت</b><span>أول خطوة — أنجزتها بفتحك هذه الواجهة</span></div>
-    <span class="chip" data-chip="start">الأساس</span>
-  </div>
-  <div class="srow" data-step="ask">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M15 4V2m0 20v-2M8 9h.01M16 9h.01M9 20h6M12 4a5 5 0 0 1 5 5c0 2-1 3-1.7 4-.6.8-1 1.3-1 2.5h-4.6c0-1.2-.4-1.7-1-2.5C8 12 7 11 7 9a5 5 0 0 1 5-5z" transform="translate(-1.5 0)"/></svg></span>
-    <div class="t"><b>اسأل البوت أول سؤال</b><span>أي سؤال عن الذكاء الاصطناعي أو غيره</span></div>
-    <span class="chip" data-chip="ask">+٢</span>
-  </div>
-  <div class="srow" data-step="invite">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4.5.2-4.5-2.3C7.5 3.4 11 3.6 12 8zM12 8s4.5.2 4.5-2.3C16.5 3.4 13 3.6 12 8z"/></svg></span>
-    <div class="t"><b>ادعُ صديقاً برابطك</b><span>أعلى مكافأة في النظام كله</span></div>
-    <span class="chip" data-chip="invite">+٢٠</span>
-  </div>
-  <div class="srow" data-step="streak">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M13 2 4.5 13.5H11L9.5 22 19 10h-6.5L13 2z"/></svg></span>
-    <div class="t"><b>حافظ على نشاطك اليومي</b><span>أيام متتالية تعني مكافآت إضافية</span></div>
-    <span class="chip" data-chip="streak">+٥</span>
-  </div>
-</section>
-
-<section class="card">
-  <div class="card-h">
-    <h2 class="display">إعداد حسابك</h2>
-    <span class="count" id="setupText">أكملت ١ من ٤</span>
-  </div>
-  <div class="bar"><i id="setupBar" style="width:25%"></i></div>
-  <div class="crow" data-step="start"><span class="ck"></span><span class="t">افتح واجهة البوت</span></div>
-  <div class="crow" data-step="ask"><span class="ck"></span><span class="t">اسأل البوت أول سؤال</span></div>
-  <div class="crow" data-step="invite"><span class="ck"></span><span class="t">ادعُ صديقاً برابطك</span></div>
-  <div class="crow" data-step="streak"><span class="ck"></span><span class="t">ارجع غداً وحافظ على سلسلتك</span></div>
-</section>
-
-<div class="sec-h" id="sec-skills">
-  <h2 class="display">مهارات البوت</h2>
-  <span class="more" data-act="ask">اسأل البوت ←</span>
-</div>
-<div class="tiles">
-  <div class="tile" data-act="ask">
-    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></span>
-    <b>اسأل البوت</b><span>جواب فوري مرح</span>
-  </div>
-  <div class="tile" data-act="points">
-    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
-    <b>نقاطي ورتبتي</b><span>بطاقتك في المحادثة</span>
-  </div>
-  <div class="tile wide" data-act="invite">
-    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span>
-    <div class="t"><b>رابط دعوتي</b><span>شاركه مع أصدقائك واكسب أعلى النقاط</span></div>
-    <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
-  </div>
-  <div class="tile wide" data-act="ticket">
-    <span class="tic"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
-    <div class="t"><b>طلب للمشرف</b><span>يوصله بنفسه ويتابعه معك</span></div>
-    <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+<!-- ================= SKILLS ================= -->
+<div class="view" id="view-skills">
+  <div class="pad">
+    <div class="vtitle">مهاراتك</div>
+    <section class="card" style="margin-top:10px">
+      <div class="srow" data-act="ask" style="border-top:none">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.8-3.8"/></svg></span>
+        <div class="t"><b>اسأل البوت</b><span>جواب فوري مرح على أي سؤال</span></div>
+        <span class="chip">+٢</span>
+      </div>
+      <div class="srow" data-act="points">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
+        <div class="t"><b>نقاطي ورتبتي</b><span>بطاقتك الكاملة في المحادثة</span></div>
+        <span class="chip">بطاقة</span>
+      </div>
+      <div class="srow" data-act="invite">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4.5.2-4.5-2.3C7.5 3.4 11 3.6 12 8zM12 8s4.5.2 4.5-2.3C16.5 3.4 13 3.6 12 8z"/></svg></span>
+        <div class="t"><b>رابط دعوتي</b><span>لكل صديق يدخل من رابطك</span></div>
+        <span class="chip">+٢٠</span>
+      </div>
+      <div class="srow" data-act="vip">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18"/></svg></span>
+        <div class="t"><b>المميزات والاشتراكات</b><span>رتب ومزايا واشتراك النجوم</span></div>
+        <span class="chip">قريباً</span>
+      </div>
+    </section>
+    <div class="tiles" style="margin-top:14px">
+      <div class="tile wide" data-act="ticket">
+        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M12 20h9M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg></span>
+        <div class="t"><b>أضف طلباً</b><span>أشياء ينجزها لك المشرف بنفسه. اكتبه ويبدأ اليوم</span></div>
+        <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+      </div>
+    </div>
   </div>
 </div>
 
-<div class="sec-h" id="sec-today">
-  <h2 class="display">اليوم</h2>
-</div>
-<div>
-  <div class="row" data-act="points">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
-    <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div>
-    <span class="go">‹</span>
-  </div>
-  <div class="row" data-act="channel">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg></span>
-    <div class="t"><b>القناة</b><span>أخبار الذكاء الاصطناعي أولاً بأول</span></div>
-    <span class="go">‹</span>
-  </div>
-  <div class="row" data-act="vip">
-    <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18M9.5 3 8 9l4 12M14.5 3 16 9l-4 12"/></svg></span>
-    <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div>
-    <span class="go">‹</span>
+<!-- ================= CHARACTERS ================= -->
+<div class="view" id="view-characters">
+  <div class="pad">
+    <div class="vtitle">مساعدك</div>
+    <section class="card presence" style="margin-top:10px">
+      <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
+      <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
+    </section>
+    <div class="tiles" style="margin-top:14px">
+      <div class="tile" data-act="ask">
+        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2z"/></svg></span>
+        <b>اكتشف</b>
+      </div>
+      <div class="tile" data-act="ticket">
+        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
+        <b>اطلب بحثاً</b>
+      </div>
+    </div>
+    <section class="card">
+      <div class="card-h"><h2>كيف يشتغل؟</h2></div>
+      <div class="srow" style="border-top:none">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg></span>
+        <div class="t"><b>اسأله في المجموعة أو الخاص</b><span>يرد عليك خلال ثوانٍ</span></div>
+      </div>
+      <div class="srow">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span>
+        <div class="t"><b>والطلبات توصل للمشرف</b><span>يراجعها ويرسل لك النتيجة على الخاص</span></div>
+      </div>
+    </section>
   </div>
 </div>
 
-<div class="sec-h" id="sec-levels">
-  <h2 class="display">الرتب والمميزات</h2>
-  <span class="more">كل ما تجمع أكثر، تصعد أكثر</span>
-</div>
-<div>
-  <div class="lvl"><span class="d" style="background:#9DBE8C"></span><b>عضو</b><span>من ٠ نقطة</span></div>
-  <div class="lvl"><span class="d" style="background:#E8A13A"></span><b>نشيط</b><span>من ١٠٠ — بطاقة ولقب</span></div>
-  <div class="lvl"><span class="d" style="background:#E60000"></span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
-  <div class="lvl"><span class="d" style="background:#C9962E"></span><b>ذهبي</b><span>من ٧٠٠ — بحث معمق شهرياً</span></div>
-  <div class="lvl"><span class="d" style="background:#211C12"></span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
+<!-- ================= FEED ================= -->
+<div class="view" id="view-feed">
+  <div class="pad">
+    <div class="vtitle">النشاط</div>
+    <div>
+      <div class="row" data-act="points" style="border-top:none">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
+        <div class="t"><b>نشاطي</b><span>أشياء كسبتها مع البوت</span></div>
+        <span class="go">‹</span>
+      </div>
+      <div class="row" data-act="points">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M12 22c4 0 7-2.9 7-6.8 0-3-2-5.4-3.5-7C14 6.8 13 5 13 2c-3 2-5.5 5-5.5 8.2-1-.4-1.9-1.2-2.5-2.2C4.4 9.4 5 11 5 15.2 5 19.1 8 22 12 22z"/></svg></span>
+        <div class="t"><b>سلسلة الأيام</b><span>نشاطك اليومي مع البوت</span></div>
+        <span class="go">‹</span>
+      </div>
+      <div class="row" data-act="channel">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg></span>
+        <div class="t"><b>القناة</b><span>آخر أخبار الذكاء الاصطناعي</span></div>
+        <span class="go">‹</span>
+      </div>
+      <div class="row" data-act="invite">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4.5.2-4.5-2.3C7.5 3.4 11 3.6 12 8zM12 8s4.5.2 4.5-2.3C16.5 3.4 13 3.6 12 8z"/></svg></span>
+        <div class="t"><b>المكافآت</b><span>أعلى مكافأة: دعوة صديق</span></div>
+        <span class="go">‹</span>
+      </div>
+    </div>
+  </div>
 </div>
 
-<div class="foot">
-  مساعد قناة ومجموعة أخبار الذكاء الاصطناعي<br>
-  <a href="https://t.me/hatmhgr">القناة</a> · المشرف <a href="https://t.me/p5t54">@p5t54</a>
+<!-- ================= MENU ================= -->
+<div class="view" id="view-menu">
+  <div class="pad">
+    <div class="vtitle">القائمة</div>
+    <section class="card" style="margin-top:10px;padding-top:8px;padding-bottom:8px">
+      <div class="row" data-act="points" style="border-top:none">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
+        <div class="t"><b>نقاطي ورتبتي</b></div><span class="go">‹</span>
+      </div>
+      <div class="row" data-act="invite">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span>
+        <div class="t"><b>رابط دعوتي</b></div><span class="go">‹</span>
+      </div>
+      <div class="row" data-act="vip">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18"/></svg></span>
+        <div class="t"><b>المميزات والاشتراكات</b></div><span class="go">‹</span>
+      </div>
+      <div class="row" data-act="channel">
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m22 2-7 20-4-9-9-4 20-7z"/><path d="M22 2 11 13"/></svg></span>
+        <div class="t"><b>القناة</b></div><span class="go">‹</span>
+      </div>
+    </section>
+
+    <div class="sec-h"><h2>الرتب والمميزات</h2></div>
+    <div>
+      <div class="lvl" style="border-top:none"><span class="d" style="background:#9DBE8C"></span><b>عضو</b><span>من ٠ نقطة</span></div>
+      <div class="lvl"><span class="d" style="background:#E8A13A"></span><b>نشيط</b><span>من ١٠٠ — بطاقة ولقب</span></div>
+      <div class="lvl"><span class="d" style="background:#1B9AF0"></span><b>مميز</b><span>من ٣٠٠ — أولوية رد</span></div>
+      <div class="lvl"><span class="d" style="background:#C9962E"></span><b>ذهبي</b><span>من ٧٠٠ — بحث معمق شهرياً</span></div>
+      <div class="lvl"><span class="d" style="background:#111214"></span><b>أسطوري</b><span>من ١٥٠٠ — اشتراك مجاني عند الإطلاق</span></div>
+    </div>
+
+    <div class="foot">
+      مساعد قناة ومجموعة أخبار الذكاء الاصطناعي<br>
+      <a href="https://t.me/hatmhgr">القناة</a> · المشرف <a href="https://t.me/p5t54">@p5t54</a>
+    </div>
+  </div>
 </div>
 
 <nav class="nav">
-  <button data-nav="sec-home" class="on"><svg viewBox="0 0 24 24" class="ic"><path d="m3 11 9-8 9 8"/><path d="M5 9.5V21h14V9.5"/></svg>الرئيسية</button>
-  <button data-nav="sec-skills"><svg viewBox="0 0 24 24" class="ic"><path d="M14 3a3 3 0 0 1 3 3h1a3 3 0 0 1 0 6h-1v3a3 3 0 1 1-6 0v-1H8a3 3 0 1 1 0-6h3V6a3 3 0 0 1 3-3z" transform="translate(0 1)"/></svg>المهارات</button>
-  <button data-nav="sec-today"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg>نقاطي</button>
-  <button data-nav="sec-levels"><svg viewBox="0 0 24 24" class="ic"><path d="M6 3h12l3 6-9 12L3 9l3-6z"/><path d="M3 9h18"/></svg>الرتب</button>
+  <button data-nav="view-home" class="on"><svg viewBox="0 0 24 24" class="ic"><path d="m3 11 9-8 9 8"/><path d="M5 9.5V21h14V9.5"/></svg>الرئيسية</button>
+  <button data-nav="view-skills"><svg viewBox="0 0 24 24" class="ic"><path d="M10 3.5A2.5 2.5 0 0 1 12.5 6v1h3A2.5 2.5 0 0 1 18 9.5 2.5 2.5 0 0 1 15.5 12h-3v3a2.5 2.5 0 1 1-5 0v-3h-3A2.5 2.5 0 0 1 2 9.5 2.5 2.5 0 0 1 4.5 7h3V6A2.5 2.5 0 0 1 10 3.5z" transform="translate(1.5 1) scale(.92)"/></svg>المهارات</button>
+  <button data-nav="view-characters"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/><path d="M12 3a9 9 0 1 0 9 9"/></svg>المساعد</button>
+  <button data-nav="view-feed"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>النشاط</button>
+  <button data-nav="view-menu"><svg viewBox="0 0 24 24" class="ic"><path d="M4 7h16M4 12h16M4 17h16"/></svg>القائمة</button>
 </nav>
 
 <script>
@@ -278,8 +419,7 @@
     var greetWord = now.getHours() < 12 ? "صباح الخير" : "مساء الخير";
     var first = user && user.first_name ? user.first_name : "";
     document.getElementById("greet").innerHTML =
-      greetWord + (first ? "، <b>" + first.replace(/[<>&]/g,"") + "</b>" : "") +
-      '<span class="dot">.</span>';
+      greetWord + (first ? "، " + first.replace(/[<>&]/g,"") : "") + ".";
   }
   function bindTg(){
     tg = window.Telegram && window.Telegram.WebApp;
@@ -291,7 +431,6 @@
   }
   window.__tgInit = bindTg;
 
-  /* greeting + date */
   var now = new Date();
   renderGreet();
   try{
@@ -299,8 +438,7 @@
       now.toLocaleDateString("ar", {weekday:"long", day:"numeric", month:"long"});
   }catch(e){}
 
-  /* setup state — persisted per user in Telegram CloudStorage,
-     with a localStorage fallback */
+  /* setup state — Telegram CloudStorage with localStorage fallback */
   var steps = {start:true, ask:false, invite:false, streak:false};
   var CHECK = '<svg viewBox="0 0 24 24"><path d="M4 12.5 9.5 18 20 6.5"/></svg>';
   function renderSteps(){
@@ -311,8 +449,9 @@
     document.getElementById("progText").textContent = txt;
     document.getElementById("setupText").textContent = txt;
     document.getElementById("setupBar").style.width = (done/4*100) + "%";
-    var segs = document.querySelectorAll("#segWrap i");
-    segs.forEach(function(s, i){ s.classList.toggle("on", i < done); });
+    document.querySelectorAll("#segWrap i").forEach(function(s, i){
+      s.classList.toggle("on", i < done);
+    });
     document.querySelectorAll(".crow").forEach(function(el){
       var k = el.getAttribute("data-step");
       el.classList.toggle("done", !!steps[k]);
@@ -347,6 +486,23 @@
   }
   loadSteps();
   bindTg();
+
+  /* ---------- view switching (folk-style separate screens) ---------- */
+  function show(viewId){
+    document.querySelectorAll(".view").forEach(function(v){
+      v.classList.toggle("on", v.id === viewId);
+    });
+    document.querySelectorAll("[data-nav]").forEach(function(b){
+      b.classList.toggle("on", b.getAttribute("data-nav") === viewId);
+    });
+    window.scrollTo(0, 0);
+  }
+  document.querySelectorAll("[data-nav]").forEach(function(btn){
+    btn.addEventListener("click", function(){ show(btn.getAttribute("data-nav")); });
+  });
+  document.querySelectorAll("[data-goto]").forEach(function(el){
+    el.addEventListener("click", function(){ show(el.getAttribute("data-goto")); });
+  });
 
   function send(action){
     try{ if (tg) tg.sendData(JSON.stringify({action: action})); }catch(e){}
@@ -390,15 +546,6 @@
       var k = el.getAttribute("data-step");
       if (k === "invite"){ doInvite(); }
       else if (k === "ask"){ steps.ask = true; saveSteps(); renderSteps(); if (tg) tg.close(); }
-    });
-  });
-
-  document.querySelectorAll("[data-nav]").forEach(function(btn){
-    btn.addEventListener("click", function(){
-      document.querySelectorAll("[data-nav]").forEach(function(b){ b.classList.remove("on"); });
-      btn.classList.add("on");
-      var t = document.getElementById(btn.getAttribute("data-nav"));
-      if (t) t.scrollIntoView({behavior:"smooth", block:"start"});
     });
   });
 })();
