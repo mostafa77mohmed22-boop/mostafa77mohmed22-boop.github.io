@@ -145,6 +145,24 @@
        padding:7px 12px;border-radius:999px}
   .nav button svg{width:21px;height:21px}
   .nav button.on{background:var(--chip);color:var(--blue);font-weight:800}
+
+  /* ===== motion & depth (v4, per the analysis spec) ===== */
+  .talk{box-shadow:0 8px 18px rgba(27,140,232,.35), inset 0 -3px 0 rgba(15,90,160,.45);
+        transition:transform .12s}
+  .talk:active{transform:scale(.96)}
+  .tile,.row{transition:transform .1s}
+  .tile:active,.row:active{transform:scale(.98)}
+  .view.on{animation:vin .32s cubic-bezier(.2,.8,.25,1)}
+  @keyframes vin{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  .card{animation:rise .45s cubic-bezier(.2,.8,.25,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .segs i{transition:background .3s}
+  .crow .ck{transition:background .25s,border-color .25s,transform .25s}
+  .crow.done .ck{transform:scale(1.07)}
+  .chip{transition:background .25s,color .25s}
+  .nav button{transition:background .25s,color .25s}
+  .hide-link{color:var(--muted);font-size:13.5px;font-weight:600;cursor:pointer}
+  #setupBody{transition:opacity .25s}
 </style>
 </head>
 <body>
@@ -163,7 +181,7 @@
       </div>
     </div>
     <div class="greet" id="greet">مساء الخير.</div>
-    <div class="meta" id="dateline"></div>
+    <div class="meta"><span id="dateline"></span><span id="wx"></span></div>
     <div class="streak">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
   </div>
 
@@ -180,7 +198,7 @@
         <span class="chip" data-chip="start">الأساس</span>
       </div>
       <div class="srow" data-step="ask">
-        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M9.6 15.6 12 3l2.4 12.6M6 21l1.2-5.4M18 21l-1.2-5.4M7.6 11h8.8"/></svg></span>
+        <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M12 3l1.9 5.6 5.6 1.9-5.6 1.9L12 18l-1.9-5.6L4.5 10.5l5.6-1.9L12 3z"/><path d="M18.5 15l.7 2 2 .7-2 .7-.7 2-.7-2-2-.7 2-.7.7-2z"/></svg></span>
         <div class="t"><b>اسأل البوت أول سؤال</b><span>أي سؤال عن الذكاء الاصطناعي أو غيره</span></div>
         <span class="chip" data-chip="ask">+٢</span>
       </div>
@@ -199,13 +217,15 @@
     <section class="card">
       <div class="card-h">
         <h2>إعداد حسابك</h2>
-        <span class="count" id="setupText">أكملت ١ من ٤</span>
+        <span><span class="hide-link" id="hideSetup">إخفاء</span> · <span class="count" id="setupText">أكملت ١ من ٤</span></span>
       </div>
+      <div id="setupBody">
       <div class="bar"><i id="setupBar" style="width:25%"></i></div>
       <div class="crow" data-step="start"><span class="t">افتح واجهة البوت</span><span class="ck"></span></div>
       <div class="crow" data-step="ask"><span class="t">اسأل البوت أول سؤال</span><span class="ck"></span></div>
       <div class="crow" data-step="invite"><span class="t">ادعُ صديقاً برابطك</span><span class="ck"></span></div>
       <div class="crow" data-step="streak"><span class="t">ارجع غداً وحافظ على سلسلتك</span><span class="ck"></span></div>
+      </div>
     </section>
 
     <section class="card presence">
@@ -415,10 +435,12 @@
   var tg = null;
   var user = null;
   function renderGreet(){
-    var now = new Date();
-    var greetWord = now.getHours() < 12 ? "صباح الخير" : "مساء الخير";
+    var h = new Date().getHours();
+    var el = document.getElementById("greet");
+    if (h >= 0 && h < 5){ el.textContent = "لسّا صاحي؟"; return; }
+    var greetWord = h < 12 ? "صباح الخير" : (h < 18 ? "نهارك سعيد" : "مساء الخير");
     var first = user && user.first_name ? user.first_name : "";
-    document.getElementById("greet").innerHTML =
+    el.innerHTML =
       greetWord + (first ? "، " + first.replace(/[<>&]/g,"") : "") + ".";
   }
   function bindTg(){
@@ -437,6 +459,36 @@
     document.getElementById("dateline").textContent =
       now.toLocaleDateString("ar", {weekday:"long", day:"numeric", month:"long"});
   }catch(e){}
+
+  /* live Sanaa weather in the meta line (Open-Meteo, no key);
+     fails silently on weak networks */
+  try{
+    fetch("https://api.open-meteo.com/v1/forecast?latitude=15.3694&longitude=44.1910&current=temperature_2m&timezone=Asia%2FAden")
+      .then(function(r){ return r.json(); })
+      .then(function(j){
+        if (j && j.current && typeof j.current.temperature_2m === "number"){
+          document.getElementById("wx").textContent =
+            " · صنعاء " + Math.round(j.current.temperature_2m) + "°";
+        }
+      }).catch(function(){});
+  }catch(e){}
+
+  /* setup card hide/show, like folk's (persisted) */
+  var hideBtn = document.getElementById("hideSetup");
+  var setupBody = document.getElementById("setupBody");
+  var setupHidden = false;
+  try{ setupHidden = localStorage.getItem("setup_hidden") === "1"; }catch(e){}
+  function paintHide(){
+    if (!hideBtn || !setupBody) return;
+    setupBody.style.display = setupHidden ? "none" : "";
+    hideBtn.textContent = setupHidden ? "إظهار" : "إخفاء";
+  }
+  if (hideBtn) hideBtn.addEventListener("click", function(){
+    setupHidden = !setupHidden;
+    try{ localStorage.setItem("setup_hidden", setupHidden ? "1" : "0"); }catch(e){}
+    paintHide();
+  });
+  paintHide();
 
   /* setup state — Telegram CloudStorage with localStorage fallback */
   var steps = {start:true, ask:false, invite:false, streak:false};
