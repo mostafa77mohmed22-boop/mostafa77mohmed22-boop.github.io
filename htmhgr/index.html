@@ -50,6 +50,19 @@
   @keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
   .pad{padding:0 16px}
 
+  /* folk home composition details (v7) */
+  .tile.tall{min-height:158px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .tile.tall .tic{width:52px;height:52px}
+  .tile.wide2{grid-column:1/-1;text-align:center;padding:28px 64px 24px;position:relative}
+  .tile.wide2 b{font-size:17px}
+  .tile.wide2 span{color:var(--muted);font-size:13.5px;line-height:1.7}
+  .tile.wide2 .plus{position:absolute;inset-inline-end:18px;top:50%;transform:translateY(-50%);
+    width:46px;height:46px;border-radius:50%;background:#fff;box-shadow:var(--sh-md);
+    display:flex;align-items:center;justify-content:center}
+  .tile.wide2 .plus svg{width:20px;height:20px}
+  .bare .row:first-of-type{border-top:none}
+  .crow .sub{display:block;color:var(--muted);font-size:12.5px;font-weight:400;margin-top:2px}
+
   /* ---------- header: the melt — folk's real secret (v6) ----------
      no box, no edge: a tall warm gradient that dissolves into the
      page background; content floats over its fade */
@@ -205,11 +218,6 @@
   </div>
 
   <div class="pad">
-    <section class="card presence">
-      <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
-      <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
-    </section>
-
     <section class="card">
       <div class="card-h">
         <h2 class="display">خلِّ البوت أذكى معك</h2>
@@ -247,9 +255,14 @@
         <div class="bar"><i id="setupBar" style="width:25%"></i></div>
         <div class="crow" data-step="start"><span class="t">افتح واجهة البوت</span><span class="ck"></span></div>
         <div class="crow" data-step="ask"><span class="t">اسأل البوت أول سؤال</span><span class="ck"></span></div>
-        <div class="crow" data-step="invite"><span class="t">ادعُ صديقاً برابطك</span><span class="ck"></span></div>
+        <div class="crow" data-step="invite"><span class="t">ادعُ صديقاً برابطك<span class="sub">برابطك الخاص — أعلى مكافأة في النظام</span></span><span class="ck"></span></div>
         <div class="crow" data-step="streak"><span class="t">ارجع غداً وحافظ على سلسلتك</span><span class="ck"></span></div>
       </div>
+    </section>
+
+    <section class="card presence">
+      <span class="avatar"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/></svg></span>
+      <div class="t"><b>مساعد HTMHGR</b><span><i class="dot"></i> يرد على الأسئلة الآن</span></div>
     </section>
 
     <div class="sec-h">
@@ -257,11 +270,11 @@
       <span class="more" data-goto="view-skills">كل المهارات ←</span>
     </div>
     <div class="tiles">
-      <div class="tile" data-act="ask">
+      <div class="tile tall" data-act="ask">
         <span class="tic"><svg viewBox="0 0 24 24" class="ic"><circle cx="12" cy="12" r="9"/><path d="m15.5 8.5-2 5-5 2 2-5 5-2z"/></svg></span>
         <b>اكتشف</b>
       </div>
-      <div class="tile" data-act="ticket">
+      <div class="tile tall" data-act="ticket">
         <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
         <b>اطلب شيئاً</b>
       </div>
@@ -272,9 +285,9 @@
       <span class="more" data-goto="view-skills">تصفح الكل ←</span>
     </div>
     <div class="tiles">
-      <div class="tile wide" data-act="invite">
-        <span class="tic"><svg viewBox="0 0 24 24" class="ic"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></span>
-        <div class="t"><b>أضف صديقاً</b><span>أشياء يكسبها لك البوت بدعوة واحدة. ابدأ اليوم</span></div>
+      <div class="tile wide2" data-act="ticket">
+        <b>أضف طلباً</b>
+        <span>أشياء ينجزها لك المشرف بنفسه<br>اكتبه ويبدأ اليوم</span>
         <span class="plus"><svg viewBox="0 0 24 24" class="ic"><path d="M12 5v14M5 12h14"/></svg></span>
       </div>
     </div>
@@ -282,7 +295,7 @@
     <div class="sec-h">
       <h2 class="display">اليوم</h2>
     </div>
-    <section class="card group" style="margin-top:0">
+    <div class="bare">
       <div class="row" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
         <div class="t"><b>نشاطي</b><span>آخر نقاط كسبتها ولماذا</span></div>
@@ -298,7 +311,7 @@
         <div class="t"><b>المميزات والاشتراكات</b><span>اشتراك النجوم قادم قريباً</span></div>
         <span class="go">‹</span>
       </div>
-    </section>
+    </div>
   </div>
 </div>
 
@@ -374,7 +387,7 @@
 <div class="view" id="view-feed">
   <div class="pad">
     <div class="vtitle display">النشاط</div>
-    <section class="card group" style="margin-top:6px">
+    <div class="bare">
       <div class="row" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg></span>
         <div class="t"><b>نشاطي</b><span>أشياء كسبتها مع البوت</span></div>
@@ -395,7 +408,7 @@
         <div class="t"><b>المكافآت</b><span>أعلى مكافأة: دعوة صديق</span></div>
         <span class="go">‹</span>
       </div>
-    </section>
+    </div>
   </div>
 </div>
 
