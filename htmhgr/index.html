@@ -1237,6 +1237,19 @@ html[data-theme="light"] .sp-tag{color:#68707D!important}
 html[data-theme="light"] .segpill button{color:#68707D!important}
 html[data-theme="light"] .segpill button.on{color:#FFFFFF!important}
 </style>
+
+<style>
+/* ===== V17 — Mira-pattern splash: one animated emblem on a living gradient,
+   in the bot's own charcoal melt (light theme: its pale twin) ===== */
+html body #splash{background:#0A0B0F!important;background-image:linear-gradient(160deg,#232B3D 0%,#12151D 46%,#05070A 100%)!important;background-size:190% 190%!important;animation:spDrift 9s ease-in-out infinite alternate!important;animation-name:spDrift!important;animation-duration:9s!important;animation-timing-function:ease-in-out!important;animation-iteration-count:infinite!important;animation-direction:alternate!important}
+html[data-theme="light"] body #splash{background:#EDF0F4!important;background-image:linear-gradient(160deg,#FFFFFF 0%,#EDF0F4 52%,#DCE4EE 100%)!important;background-size:190% 190%!important}
+@keyframes spDrift{from{background-position:12% 0%}to{background-position:88% 100%}}
+html body #splash .sp-name,html body #splash .sp-tag{display:none!important}
+html body #splash .sp-emoji{width:118px!important;height:118px!important}
+html body #splash .sp-emoji img{animation:spFloat 3.2s ease-in-out infinite;animation-name:spFloat;animation-duration:3.2s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;filter:drop-shadow(0 14px 30px rgba(0,0,0,.45))}
+@keyframes spFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.045)}}
+@media (prefers-reduced-motion: reduce){html body #splash{animation:none!important}html body #splash .sp-emoji img{animation:none!important}}
+</style>
 </head>
 <body>
 
