@@ -4,6 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>واجهة بوت HTMHGR</title>
+<noscript><style>#splash{display:none}</style></noscript>
 <script async src="https://telegram.org/js/telegram-web-app.js" onload="window.__tgInit&&window.__tgInit()"></script>
 <script>
 /* Telegram keeps its native loading placeholder up until the app calls
@@ -15,6 +16,16 @@
     if (w){ try{ w.ready(); }catch(e){} clearInterval(p); }
   }, 50);
   setTimeout(function(){ clearInterval(p); }, 10000);
+  /* Splash failsafe, independent of the main script: if the main
+     script died before endSplash() marked the body booted, melt the
+     splash away here so it can never cover the app forever. */
+  setTimeout(function(){
+    if (document.body && !document.body.classList.contains("booted")){
+      var s = document.getElementById("splash");
+      if (s){ s.style.opacity = "0"; s.style.visibility = "hidden"; }
+      document.body.classList.add("booted");
+    }
+  }, 3500);
 })();
 </script>
 <style>
@@ -76,10 +87,12 @@
     background:linear-gradient(180deg,rgba(246,168,104,.30),rgba(246,168,104,0));
     pointer-events:none}
   .topbar{display:flex;justify-content:space-between;align-items:center}
-  .talk{background:var(--red-deep);color:#fff;border:none;border-radius:999px;cursor:pointer;
+  /* v9: folk's jelly button — light gloss on top melting into the
+     brand red, dark lip underneath keeps the 3D press feel */
+  .talk{background:linear-gradient(180deg,#FF5A5A 0%,#F40000 48%,#E60000 100%);color:#fff;border:none;border-radius:999px;cursor:pointer;
         padding:11px 18px;font-size:15.5px;font-weight:800;font-family:inherit;
         display:flex;align-items:center;gap:8px;
-        box-shadow:0 8px 18px rgba(120,10,0,.30), inset 0 -3px 0 rgba(0,0,0,.22);
+        box-shadow:0 8px 18px rgba(120,10,0,.30), inset 0 -3px 0 rgba(0,0,0,.22), inset 0 1.5px 0 rgba(255,255,255,.35);
         transition:transform .12s var(--ease)}
   .talk:active{transform:scale(.95)}
   .talk svg{width:19px;height:19px;stroke:#fff}
@@ -96,7 +109,11 @@
           box-shadow:0 4px 12px rgba(120,40,0,.16)}
 
   /* ---------- cards & sections ---------- */
-  .card{background:var(--card);border-radius:28px;padding:22px;margin-top:18px;box-shadow:var(--sh-md)}
+  /* v9 (folk craft): no hairline borders anywhere on cards — soft
+     shadow only, over a warm vertical melt (warm white on top,
+     melting a touch warmer toward the bottom) */
+  .card{background:linear-gradient(180deg,#FFFDF7 0%,#FFF9EC 58%,#FCF3DC 100%);
+        border-radius:28px;padding:22px;margin-top:18px;box-shadow:var(--sh-md)}
   .card-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:4px;gap:10px}
   .card-h h2,.sec-h h2{font-size:21px;font-weight:700}
   .count{color:var(--muted);font-size:13.5px;font-weight:600;white-space:nowrap}
@@ -524,8 +541,9 @@
       .then(function(r){ return r.json(); })
       .then(function(j){
         if (j && j.current && typeof j.current.temperature_2m === "number"){
-          document.getElementById("wx").textContent =
-            " · صنعاء " + Math.round(j.current.temperature_2m) + "°";
+          var arDigits = "٠١٢٣٤٥٦٧٨٩";
+          var t = String(Math.round(j.current.temperature_2m)).replace(/\d/g, function(d){ return arDigits[d]; });
+          document.getElementById("wx").textContent = " · صنعاء " + t + "°";
         }
       }).catch(function(){});
   }catch(e){}
@@ -647,7 +665,7 @@
     steps.invite = true; saveSteps(); renderSteps();
     var link = inviteLink();
     if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
-    if (tg) tg.showPopup({title:"رابط دعوتك 🎁",
+    if (tg && tg.showPopup) tg.showPopup({title:"رابط دعوتك 🎁",
       message:"انسخ وشارك: " + link,
       buttons:[{type:"ok", text:"تمام"}]});
   }
@@ -660,9 +678,9 @@
     el.addEventListener("click", function(){
       var act = el.getAttribute("data-act");
       if (act === "points"){ send("points"); if (tg) tg.close(); }
-      else if (act === "ask"){ steps.ask = true; saveSteps(); renderSteps(); if (tg) tg.close(); }
-      else if (act === "ticket"){ if (tg) tg.close(); }
-      else if (act === "channel"){ if (tg) tg.openTelegramLink("https://t.me/hatmhgr"); }
+      else if (act === "ask"){ steps.ask = true; saveSteps(); renderSteps(); send("ask"); if (tg) tg.close(); }
+      else if (act === "ticket"){ send("ticket"); if (tg) tg.close(); }
+      else if (act === "channel"){ if (tg) tg.openTelegramLink("https://t.me/hatmhgr"); else window.open("https://t.me/hatmhgr", "_blank"); }
       else if (act === "vip"){ send("vip"); if (tg) tg.close(); }
       else if (act === "invite"){ doInvite(); }
     });
@@ -672,7 +690,7 @@
     el.addEventListener("click", function(){
       var k = el.getAttribute("data-step");
       if (k === "invite"){ doInvite(); }
-      else if (k === "ask"){ steps.ask = true; saveSteps(); renderSteps(); if (tg) tg.close(); }
+      else if (k === "ask"){ steps.ask = true; saveSteps(); renderSteps(); send("ask"); if (tg) tg.close(); }
     });
   });
 })();
