@@ -988,6 +988,39 @@ button:focus-visible,[data-act]:focus-visible,[data-nav]:focus-visible{
   box-shadow:inset 0 1px 0 rgba(255,255,255,.65)!important;
   backdrop-filter:blur(7px) saturate(1.6) brightness(1.05);-webkit-backdrop-filter:blur(7px) saturate(1.6) brightness(1.05);
 }
+
+/* ===== GLASS PASS 3 — glass everywhere + a slimmer, smoother nav ===== */
+.card{
+  background:linear-gradient(180deg,rgba(255,255,255,.62),rgba(255,252,244,.48))!important;
+  border:1px solid rgba(255,255,255,.65)!important;
+  box-shadow:0 14px 34px rgba(75,43,22,.09),inset 0 1px 0 rgba(255,255,255,.9)!important;
+  backdrop-filter:blur(16px) saturate(1.45);-webkit-backdrop-filter:blur(16px) saturate(1.45);
+}
+.tile{
+  background:linear-gradient(180deg,rgba(255,255,255,.50),rgba(255,252,244,.36))!important;
+  backdrop-filter:blur(12px) saturate(1.4);-webkit-backdrop-filter:blur(12px) saturate(1.4);
+}
+.welcome-card{
+  background:linear-gradient(135deg,rgba(20,57,103,.80),rgba(38,113,183,.74) 58%,rgba(62,159,197,.68))!important;
+  border:1px solid rgba(255,255,255,.45)!important;
+  box-shadow:0 18px 42px rgba(20,62,111,.16),inset 0 1px 0 rgba(255,255,255,.35)!important;
+  backdrop-filter:blur(14px) saturate(1.5);-webkit-backdrop-filter:blur(14px) saturate(1.5);
+}
+.welcome-features>div{
+  background:rgba(255,255,255,.14)!important;border:1px solid rgba(255,255,255,.30)!important;
+  backdrop-filter:blur(10px) saturate(1.4);-webkit-backdrop-filter:blur(10px) saturate(1.4);
+}
+#startJourney{
+  background:linear-gradient(180deg,rgba(255,255,255,.92),rgba(255,255,255,.78))!important;
+  backdrop-filter:blur(8px) saturate(1.3);-webkit-backdrop-filter:blur(8px) saturate(1.3);
+}
+.nav{
+  inset-inline:26px!important;max-width:430px!important;margin-inline:auto!important;
+  padding:5px!important;
+}
+.nav button{padding:6px 4px 5px!important;font-size:9.5px!important;gap:2px!important}
+.nav button svg{width:20px!important;height:20px!important}
+.nav::after{opacity:.35}
 </style>
 
 </head>
@@ -1653,7 +1686,7 @@ button:focus-visible,[data-act]:focus-visible,[data-nav]:focus-visible{
     var nav = document.querySelector(".nav");
     var fe = document.getElementById("lgMap");
     if (!nav || !fe) return;
-    var SCALE = 46, BAND = 16, MAXSHIFT = 11;
+    var SCALE = 46, BAND = 16, MAXSHIFT = 8;
     function build(){
       var r = nav.getBoundingClientRect();
       var W = Math.max(2, Math.round(r.width)), H = Math.max(2, Math.round(r.height));
