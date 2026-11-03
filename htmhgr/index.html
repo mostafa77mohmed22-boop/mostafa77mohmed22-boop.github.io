@@ -1495,8 +1495,8 @@ html{background:#0A0C12!important}
     try{ tg.ready(); tg.expand(); }catch(e){}
     user = (tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
     renderGreet();
-    loadSteps();
-    initDash();
+    try{ loadSteps(); }catch(e){}
+    try{ initDash(); }catch(e){}
   }
   window.__tgInit = bindTg;
 
@@ -1558,6 +1558,8 @@ html{background:#0A0C12!important}
   /* setup state — Telegram CloudStorage with localStorage fallback */
   /* Completion is server-authoritative. Local storage is never proof. */
   var steps = {start:false, ask:false, invite:false, streak:false};
+  var THRESH = [0, 100, 300, 700, 1500];
+  var LEVEL_NAMES = ["🌱 عضو", "🔥 نشيط", "⭐ مميز", "💎 ذهبي", "👑 أسطوري"];
   var pendingSteps = {start:false, ask:false, invite:false, streak:false};
   var CHECK = '<svg viewBox="0 0 24 24"><path pathLength="24" d="M4 12.5 9.5 18 20 6.5"/></svg>';
   function renderSteps(){
@@ -1600,8 +1602,8 @@ html{background:#0A0C12!important}
     }catch(e){}
     renderSteps();
   }
-  loadSteps();
-  bindTg();
+  try{ loadSteps(); }catch(e){}
+  try{ bindTg(); }catch(e){}
 
   /* ---------- view switching (folk-style separate screens) ---------- */
   function show(viewId){
@@ -1673,8 +1675,6 @@ html{background:#0A0C12!important}
      a balance. Checksum (sha256 of the JSON + the Telegram user id)
      is verified when the platform allows it; a mismatch drops the
      payload and the dashboard falls back to graceful zeros + hint. */
-  var THRESH = [0, 100, 300, 700, 1500];
-  var LEVEL_NAMES = ["🌱 عضو", "🔥 نشيط", "⭐ مميز", "💎 ذهبي", "👑 أسطوري"];
   var dashData = null, dashParsed = false;
   function b64urlJson(s){
     s = s.replace(/-/g, "+").replace(/_/g, "/");
@@ -1791,7 +1791,7 @@ html{background:#0A0C12!important}
       renderDash();
     }
   }
-  initDash();
+  try{ initDash(); }catch(e){}
 })();
 </script>
 
