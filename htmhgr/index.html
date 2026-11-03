@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>واجهة بوت HTMHGR</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@400;700&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
 <noscript><style>#splash{display:none}</style></noscript>
 <script async src="https://telegram.org/js/telegram-web-app.js" onload="window.__tgInit&&window.__tgInit()"></script>
 <script>
@@ -43,7 +46,7 @@
     --spring:cubic-bezier(.34,1.45,.44,1);
   }
   *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
-  body{font-family:"Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);
+  body{font-family:"IBM Plex Sans Arabic","Segoe UI",Tahoma,Arial,sans-serif;background:var(--bg);color:var(--ink);
        min-height:100vh;padding-bottom:118px}
   .display{font-family:"Aref Ruqaa","Amiri",serif}
   svg.ic{width:22px;height:22px;flex:0 0 22px;stroke:currentColor;fill:none;
@@ -202,6 +205,26 @@
   .foot{color:var(--muted);font-size:12.5px;text-align:center;margin-top:28px;line-height:2}
   .foot a{color:var(--red);text-decoration:none;font-weight:700}
 
+  /* home pills + personal dashboard card (menu view) — the member's
+     own data lives HERE now, not in chat messages (2026-11-03) */
+  .pills{display:flex;gap:8px;flex-wrap:wrap}
+  .dash-total{display:flex;align-items:baseline;gap:8px;margin-top:8px}
+  .dash-total b{font-size:46px;font-weight:800;line-height:1.05}
+  .dash-total span{color:var(--muted);font-size:14px;font-weight:600}
+  .dash-note{color:var(--muted);font-size:13px;font-weight:600;margin-top:2px}
+  .dash-stats{display:flex;gap:10px;margin:14px 0 4px}
+  .dash-stats>div{flex:1;background:rgba(255,255,255,.7);border-radius:18px;
+    padding:12px 8px;text-align:center;box-shadow:var(--sh-sm)}
+  .dash-stats b{display:block;font-size:22px;font-weight:800}
+  .dash-stats span{color:var(--muted);font-size:12px;font-weight:600}
+  .drow{display:flex;align-items:center;gap:11px;padding:11px 0;border-top:1px solid var(--line)}
+  .drow .delta{font-size:15px;font-weight:800;white-space:nowrap}
+  .drow .delta.plus{color:#3E7C43}
+  .drow .delta.minus{color:var(--red)}
+  .drow .why{flex:1;color:var(--muted);font-size:13.5px}
+  .dash-hint{margin-top:12px;background:var(--chip);color:var(--ink);border-radius:14px;
+    padding:10px 12px;font-size:12.5px;line-height:1.8;font-weight:600}
+
   /* bottom nav */
   .nav{position:fixed;bottom:calc(14px + env(safe-area-inset-bottom));inset-inline:12px;z-index:30;
        background:#fff;border-radius:999px;display:flex;justify-content:space-around;padding:7px;
@@ -256,7 +279,10 @@
     </div>
     <div class="greet display" id="greet">مساء الخير.</div>
     <div class="meta"><span id="dateline"></span><span id="wx"></span></div>
-    <div class="streak">🔥 سلسلة نشاطك تُحسب من البوت نفسه</div>
+    <div class="pills">
+      <span class="streak" id="pillPoints">⭐ نقاطك ٠</span>
+      <span class="streak" id="pillStreak">🔥 سلسلتك ٠ يوم</span>
+    </div>
   </div>
 
   <div class="pad">
@@ -369,8 +395,8 @@
       </div>
       <div class="srow" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
-        <div class="t"><b>نقاطي ورتبتي</b><span>بطاقتك الكاملة في المحادثة</span></div>
-        <span class="chip">بطاقة</span>
+        <div class="t"><b>نقاطي ورتبتي</b><span>لوحتك الكاملة في صفحة القائمة</span></div>
+        <span class="chip">لوحة</span>
       </div>
       <div class="srow" data-act="invite">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><rect x="3" y="8" width="18" height="4"/><path d="M5 12v9h14v-9M12 8v13M12 8s-4.5.2-4.5-2.3C7.5 3.4 11 3.6 12 8zM12 8s4.5.2 4.5-2.3C16.5 3.4 13 3.6 12 8z"/></svg></span>
@@ -458,7 +484,22 @@
 <div class="view" id="view-menu">
   <div class="pad">
     <div class="vtitle display">القائمة</div>
-    <section class="card group" style="margin-top:6px">
+    <section class="card" id="dashCard" style="margin-top:6px">
+      <div class="card-h">
+        <h2 class="display">لوحتك</h2>
+        <span class="chip" id="dashLevel">🌱 عضو</span>
+      </div>
+      <div class="dash-total"><b id="dashTotal">٠</b><span>نقطة عندك</span></div>
+      <div class="bar"><i id="dashBar" style="width:0%"></i></div>
+      <div class="dash-note" id="dashNext">يتبقى لك ١٠٠ نقطة لرتبة 🔥 نشيط</div>
+      <div class="dash-stats">
+        <div><b id="dashStreak">٠</b><span>يوم نشاط متتالٍ</span></div>
+        <div><b id="dashInvited">٠</b><span>عضو دعوته برابطك</span></div>
+      </div>
+      <div id="dashActs"></div>
+      <div class="dash-hint" id="dashHint" style="display:none">افتح الواجهة من رسالة البوت في الخاص علشان تظهر بياناتك هنا</div>
+    </section>
+    <section class="card group">
       <div class="row" data-act="points">
         <span class="ric"><svg viewBox="0 0 24 24" class="ic"><path d="m12 3 2.7 5.6 6.1.8-4.5 4.2 1.1 6-5.4-3-5.4 3 1.1-6L3.2 9.4l6.1-.8L12 3z"/></svg></span>
         <div class="t"><b>نقاطي ورتبتي</b></div><span class="go">‹</span>
@@ -508,6 +549,10 @@
      immediately without it; when it arrives, __tgInit binds it. */
   var tg = null;
   var user = null;
+  var AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+  function arDigits(n){
+    return String(n).replace(/\d/g, function(d){ return AR_DIGITS[d]; });
+  }
   function renderGreet(){
     var h = new Date().getHours();
     var el = document.getElementById("greet");
@@ -524,6 +569,7 @@
     user = (tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
     renderGreet();
     loadSteps();
+    initDash();
   }
   window.__tgInit = bindTg;
 
@@ -541,8 +587,7 @@
       .then(function(r){ return r.json(); })
       .then(function(j){
         if (j && j.current && typeof j.current.temperature_2m === "number"){
-          var arDigits = "٠١٢٣٤٥٦٧٨٩";
-          var t = String(Math.round(j.current.temperature_2m)).replace(/\d/g, function(d){ return arDigits[d]; });
+          var t = arDigits(Math.round(j.current.temperature_2m));
           document.getElementById("wx").textContent = " · صنعاء " + t + "°";
         }
       }).catch(function(){});
@@ -693,6 +738,121 @@
       else if (k === "ask"){ steps.ask = true; saveSteps(); renderSteps(); send("ask"); if (tg) tg.close(); }
     });
   });
+
+  /* ---------- personal dashboard (the bot rides a snapshot in ?d=) ----------
+     Personal details live HERE, not in chat messages (Mustafa's
+     order, 2026-11-03). The snapshot is display-only: real points
+     stay server-side in the bot, so editing the URL can never fake
+     a balance. Checksum (sha256 of the JSON + the Telegram user id)
+     is verified when the platform allows it; a mismatch drops the
+     payload and the dashboard falls back to graceful zeros + hint. */
+  var THRESH = [0, 100, 300, 700, 1500];
+  var LEVEL_NAMES = ["🌱 عضو", "🔥 نشيط", "⭐ مميز", "💎 ذهبي", "👑 أسطوري"];
+  var dashData = null, dashParsed = false;
+  function b64urlJson(s){
+    s = s.replace(/-/g, "+").replace(/_/g, "/");
+    while (s.length % 4) s += "=";
+    var bin = atob(s), out = "";
+    try{
+      var bytes = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+      out = new TextDecoder("utf-8").decode(bytes);
+    }catch(e){
+      out = decodeURIComponent(escape(bin)); /* older WebViews */
+    }
+    return JSON.parse(out);
+  }
+  function parseDash(){
+    if (dashParsed) return;
+    dashParsed = true;
+    try{
+      var m = /[?&]d=([^&]+)/.exec(location.search || "");
+      if (!m) return;
+      var o = b64urlJson(m[1]);
+      if (o && typeof o.t === "number" && typeof o.lv === "string") dashData = o;
+    }catch(e){ dashData = null; }
+  }
+  function levelFor(total){
+    var idx = 0;
+    for (var i = 0; i < THRESH.length; i++){ if (total >= THRESH[i]) idx = i; }
+    return idx;
+  }
+  function renderDash(){
+    var d = dashData;
+    var total = d ? (d.t | 0) : 0;
+    var streak = d ? (d.s | 0) : 0;
+    var idx = levelFor(total);
+    var pp = document.getElementById("pillPoints");
+    if (pp) pp.textContent = "⭐ نقاطك " + arDigits(total);
+    var ps = document.getElementById("pillStreak");
+    if (ps) ps.textContent = "🔥 سلسلتك " + arDigits(streak) + " يوم";
+    var lv = document.getElementById("dashLevel");
+    if (lv) lv.textContent = (d && d.lv) ? d.lv : LEVEL_NAMES[idx];
+    var dt = document.getElementById("dashTotal");
+    if (dt) dt.textContent = arDigits(total);
+    var pct = 100;
+    if (idx < THRESH.length - 1){
+      pct = Math.round((total - THRESH[idx]) / (THRESH[idx + 1] - THRESH[idx]) * 100);
+    }
+    var bar = document.getElementById("dashBar");
+    if (bar) bar.style.width = pct + "%";
+    var nx = document.getElementById("dashNext");
+    if (nx){
+      if (d && d.nx){
+        nx.textContent = "يتبقى لك " + arDigits(d.rem | 0) + " نقطة لرتبة " + d.nx;
+      } else if (idx >= THRESH.length - 1){
+        nx.textContent = "أنت في أعلى رتبة 👑";
+      } else {
+        nx.textContent = "يتبقى لك " + arDigits(THRESH[idx + 1] - total) +
+          " نقطة لرتبة " + LEVEL_NAMES[idx + 1];
+      }
+    }
+    var ds = document.getElementById("dashStreak");
+    if (ds) ds.textContent = arDigits(streak);
+    var di = document.getElementById("dashInvited");
+    if (di) di.textContent = arDigits(d ? (d.i | 0) : 0);
+    var acts = document.getElementById("dashActs");
+    if (acts){
+      acts.innerHTML = "";
+      ((d && d.a) || []).forEach(function(pair){
+        var delta = pair[0] | 0;
+        var row = document.createElement("div");
+        row.className = "drow";
+        var dl = document.createElement("span");
+        dl.className = "delta " + (delta >= 0 ? "plus" : "minus");
+        dl.textContent = (delta >= 0 ? "+" : "−") + arDigits(Math.abs(delta));
+        var wy = document.createElement("span");
+        wy.className = "why";
+        wy.textContent = String(pair[1] || "");
+        row.appendChild(dl);
+        row.appendChild(wy);
+        acts.appendChild(row);
+      });
+    }
+    var hint = document.getElementById("dashHint");
+    if (hint) hint.style.display = d ? "none" : "block";
+  }
+  function initDash(){
+    parseDash();
+    var d = dashData;
+    var uid = user && user.id;
+    if (d && uid && window.crypto && crypto.subtle && window.TextEncoder){
+      var clone = {};
+      Object.keys(d).forEach(function(k){ if (k !== "c") clone[k] = d[k]; });
+      crypto.subtle.digest("SHA-256",
+        new TextEncoder().encode(JSON.stringify(clone) + String(uid)))
+        .then(function(buf){
+          var hex = Array.prototype.map.call(new Uint8Array(buf), function(b){
+            return ("0" + b.toString(16)).slice(-2);
+          }).join("");
+          if (hex.slice(0, 10) !== d.c) dashData = null;
+          renderDash();
+        }).catch(function(){ renderDash(); });
+    } else {
+      renderDash();
+    }
+  }
+  initDash();
 })();
 </script>
 </body>
