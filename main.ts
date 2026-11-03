@@ -1,1 +1,55 @@
-Ly8gSFRNSEdSIE1pbmkgQXBwIOKAlCBzdGF0aWMgc2VydmVyIGZvciBEZW5vIERlcGxveS4KLy8gU2VydmVzIHRoZSBpbnRlcmZhY2UgcGFnZSAoaHRtaGdyL2luZGV4Lmh0bWwgaW4gdGhpcyByZXBvKSB3aXRoIGEgcHJvcGVyCi8vIHRleHQvaHRtbCBjb250ZW50IHR5cGUsIHBsdXMgdGhlIHNlbGYtaG9zdGVkIGFuaW1hdGVkIGVtb2ppIHNldCB1bmRlcgovLyAvZW1vamkvPG5hbWU+LndlYnAgKGh0bWhnci9lbW9qaS9taW4vKSwgZnJvbSBEZW5vJ3MgZWRnZSBuZXR3b3JrLgpjb25zdCBodG1sID0gYXdhaXQgRGVuby5yZWFkVGV4dEZpbGUobmV3IFVSTCgiLi9odG1oZ3IvaW5kZXguaHRtbCIsIGltcG9ydC5tZXRhLnVybCkpOwoKRGVuby5zZXJ2ZShhc3luYyAocmVxKSA9PiB7CiAgY29uc3QgdXJsID0gbmV3IFVSTChyZXEudXJsKTsKICBpZiAodXJsLnBhdGhuYW1lLnN0YXJ0c1dpdGgoIi9lbW9qaS8iKSkgewogICAgY29uc3QgbmFtZSA9IHVybC5wYXRobmFtZS5zbGljZSgiL2Vtb2ppLyIubGVuZ3RoKTsKICAgIGlmICgvXlthLXpdK1wud2VicCQvLnRlc3QobmFtZSkpIHsKICAgICAgdHJ5IHsKICAgICAgICBjb25zdCBkYXRhID0gYXdhaXQgRGVuby5yZWFkRmlsZSgKICAgICAgICAgIG5ldyBVUkwoIi4vaHRtaGdyL2Vtb2ppL21pbi8iICsgbmFtZSwgaW1wb3J0Lm1ldGEudXJsKSwKICAgICAgICApOwogICAgICAgIHJldHVybiBuZXcgUmVzcG9uc2UoZGF0YSwgewogICAgICAgICAgaGVhZGVyczogewogICAgICAgICAgICAiY29udGVudC10eXBlIjogImltYWdlL3dlYnAiLAogICAgICAgICAgICAiY2FjaGUtY29udHJvbCI6ICJwdWJsaWMsIG1heC1hZ2U9NjA0ODAwLCBpbW11dGFibGUiLAogICAgICAgICAgfSwKICAgICAgICB9KTsKICAgICAgfSBjYXRjaCB7CiAgICAgICAgcmV0dXJuIG5ldyBSZXNwb25zZSgibm90IGZvdW5kIiwgeyBzdGF0dXM6IDQwNCB9KTsKICAgICAgfQogICAgfQogICAgcmV0dXJuIG5ldyBSZXNwb25zZSgibm90IGZvdW5kIiwgeyBzdGF0dXM6IDQwNCB9KTsKICB9CiAgcmV0dXJuIG5ldyBSZXNwb25zZShodG1sLCB7CiAgICBoZWFkZXJzOiB7CiAgICAgICJjb250ZW50LXR5cGUiOiAidGV4dC9odG1sOyBjaGFyc2V0PXV0Zi04IiwKICAgICAgImNhY2hlLWNvbnRyb2wiOiAicHVibGljLCBtYXgtYWdlPTMwMCIsCiAgICB9LAogIH0pOwp9KTsK
+// HTMHGR Mini App — static server for Deno Deploy.
+// Serves the interface page (htmhgr/index.html) as text/html, plus the
+// animated emoji set under /emoji/<name>.webp. The emoji files are stored
+// in this repo as base64 text (the GitHub MCP write path is text-only),
+// so they are decoded once at startup and served as binary image/webp.
+const html = await Deno.readTextFile(new URL("./htmhgr/index.html", import.meta.url));
+
+const EMOJI: Record<string, Uint8Array> = {};
+for (
+  const name of [
+    "house",
+    "sparkles",
+    "robot",
+    "newspaper",
+    "person",
+    "speech",
+    "star",
+    "fire",
+  ]
+) {
+  try {
+    const b64 = await Deno.readTextFile(
+      new URL("./htmhgr/emoji/min/" + name + ".webp", import.meta.url),
+    );
+    const bin = atob(b64.trim());
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    EMOJI[name] = bytes;
+  } catch {
+    // missing asset: requests for it will 404
+  }
+}
+
+Deno.serve((req) => {
+  const url = new URL(req.url);
+  if (url.pathname.startsWith("/emoji/")) {
+    const name = url.pathname.slice("/emoji/".length).replace(/\.webp$/, "");
+    const data = EMOJI[name];
+    if (data) {
+      return new Response(data, {
+        headers: {
+          "content-type": "image/webp",
+          "cache-control": "public, max-age=604800, immutable",
+        },
+      });
+    }
+    return new Response("not found", { status: 404 });
+  }
+  return new Response(html, {
+    headers: {
+      "content-type": "text/html; charset=utf-8",
+      "cache-control": "public, max-age=300",
+    },
+  });
+});
