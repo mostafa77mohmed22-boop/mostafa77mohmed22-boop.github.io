@@ -1021,6 +1021,24 @@ button:focus-visible,[data-act]:focus-visible,[data-nav]:focus-visible{
 .nav button{padding:6px 4px 5px!important;font-size:9.5px!important;gap:2px!important}
 .nav button svg{width:20px!important;height:20px!important}
 .nav::after{opacity:.35}
+
+/* ===== MOTION + BUBBLE — animated icons, Verifier-style (2026-11-03) ===== */
+@keyframes iconPop{0%{transform:scale(.6)}55%{transform:scale(1.28)}78%{transform:scale(.94)}100%{transform:scale(1)}}
+@keyframes flameDance{from{transform:scale(1) rotate(-2deg)}to{transform:scale(1.07) rotate(2.5deg)}}
+.nav button.on{
+  background:linear-gradient(180deg,rgba(255,255,255,.34),rgba(255,255,255,.18))!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 4px 12px rgba(30,30,60,.10)!important;
+}
+.nav button.on svg{
+  background:linear-gradient(180deg,rgba(255,255,255,.85),rgba(255,255,255,.50));
+  border-radius:50%;padding:6px;width:19px!important;height:19px!important;
+  box-shadow:inset 0 1px 0 #fff,0 5px 12px rgba(30,30,60,.20);
+  animation:iconPop .55s var(--spring) both;
+}
+.nav button:active svg{transform:scale(.88)}
+#pillStreak{animation:flameDance 1.1s ease-in-out infinite alternate;transform-origin:center}
+.talk svg{transition:transform .3s var(--spring)}
+.talk:active svg{transform:rotate(-8deg) scale(1.15)}
 </style>
 
 </head>
