@@ -956,34 +956,51 @@ button:focus-visible,[data-act]:focus-visible,[data-nav]:focus-visible{
 @media(max-width:390px){.welcome-card{padding:19px 15px 15px;border-radius:23px}.welcome-features{gap:6px}.welcome-features>div{padding:10px 6px}.task-status{font-size:8px}}
 @media(prefers-reduced-motion:reduce){.welcome-card,.view.on .welcome-card,.view.on .how-card,.view.on .card,.view.on .tile{animation:none!important}}
 
-/* ===== GLASS PASS — Telegram Liquid Glass, final word (Mustafa 2026-11-03) ===== */
+/* ===== GLASS PASS 2 — real Liquid Glass, GitHub technique (2026-11-03) =====
+   Clear glass, not frost: a near-clear center; the glass lives at the rim —
+   specular edge light, a top sheen, a faint dispersion ring. On Chromium
+   the nav also gets an SVG displacement lens (script at the end) that bends
+   the backdrop at its edges; everywhere else this clear-glass CSS stands. */
 .nav{
-  background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,.24))!important;
-  backdrop-filter:blur(28px) saturate(1.8)!important;-webkit-backdrop-filter:blur(28px) saturate(1.8)!important;
+  background:linear-gradient(180deg,rgba(255,255,255,.30),rgba(255,255,255,.15))!important;
+  border:1px solid rgba(255,255,255,.55)!important;
+  box-shadow:0 18px 42px rgba(30,30,60,.16),0 2px 8px rgba(30,30,60,.06),inset 0 1px 0 rgba(255,255,255,.85),inset 0 -1px 0 rgba(255,255,255,.20)!important;
+  backdrop-filter:blur(9px) saturate(1.7) brightness(1.05)!important;
+  -webkit-backdrop-filter:blur(9px) saturate(1.7) brightness(1.05)!important;
 }
-.talk{
-  background:linear-gradient(180deg,rgba(255,255,255,.27),rgba(255,255,255,.14))!important;
-  border:1px solid rgba(255,255,255,.50)!important;color:#fff!important;
-  box-shadow:0 8px 20px rgba(18,38,84,.18),inset 0 1px 0 rgba(255,255,255,.55)!important;
-  backdrop-filter:blur(18px) saturate(1.7);-webkit-backdrop-filter:blur(18px) saturate(1.7);
-}
-.brand{
-  background:linear-gradient(180deg,rgba(255,255,255,.27),rgba(255,255,255,.14))!important;
-  border:1px solid rgba(255,255,255,.50)!important;color:#fff!important;
-  box-shadow:0 8px 20px rgba(18,38,84,.16),inset 0 1px 0 rgba(255,255,255,.55)!important;
-  backdrop-filter:blur(18px) saturate(1.7);-webkit-backdrop-filter:blur(18px) saturate(1.7);
+.nav::before{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+  background:linear-gradient(180deg,rgba(255,255,255,.38),rgba(255,255,255,0) 46%)}
+.nav::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;padding:1.2px;
+  background:conic-gradient(from 210deg,rgba(255,120,120,0),rgba(255,120,120,.35),rgba(120,200,255,.35),rgba(160,255,190,.28),rgba(255,120,120,0));
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;
+  mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);mask-composite:exclude;opacity:.5}
+.nav button{position:relative;z-index:1}
+.talk,.brand{
+  background:linear-gradient(180deg,rgba(255,255,255,.17),rgba(255,255,255,.08))!important;
+  border:1px solid rgba(255,255,255,.55)!important;color:#fff!important;
+  box-shadow:0 8px 20px rgba(18,38,84,.15),inset 0 1px 0 rgba(255,255,255,.75),inset 0 -6px 12px rgba(255,255,255,.05)!important;
+  backdrop-filter:blur(7px) saturate(1.6) brightness(1.05);-webkit-backdrop-filter:blur(7px) saturate(1.6) brightness(1.05);
 }
 .brand .mark i{background:#fff!important;box-shadow:0 2px 6px rgba(18,38,84,.25)}
 .streak{
-  background:rgba(255,255,255,.20)!important;
-  border:1px solid rgba(255,255,255,.42)!important;color:#fff!important;
-  box-shadow:inset 0 1px 0 rgba(255,255,255,.45)!important;
-  backdrop-filter:blur(14px) saturate(1.6);-webkit-backdrop-filter:blur(14px) saturate(1.6);
+  background:rgba(255,255,255,.14)!important;
+  border:1px solid rgba(255,255,255,.48)!important;color:#fff!important;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.65)!important;
+  backdrop-filter:blur(7px) saturate(1.6) brightness(1.05);-webkit-backdrop-filter:blur(7px) saturate(1.6) brightness(1.05);
 }
 </style>
 
 </head>
 <body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="lgLens" x="0%" y="0%" width="100%" height="100%" color-interpolation-filters="sRGB">
+      <feImage id="lgMap" preserveAspectRatio="none" result="map"/>
+      <feDisplacementMap in="SourceGraphic" in2="map" scale="46" xChannelSelector="R" yChannelSelector="G"/>
+    </filter>
+  </defs>
+</svg>
 
 <div id="splash">
   <div class="sp-mark"><i></i><i></i><i></i><i></i></div>
@@ -1622,5 +1639,59 @@ button:focus-visible,[data-act]:focus-visible,[data-nav]:focus-visible{
 })();
 </script>
 
+<script>
+/* Liquid Glass lens — Chromium only, fully guarded.
+   Builds a displacement map from the nav's own rounded-rect SDF and sets
+   backdrop-filter:url() so backdrop content bends at the rim like real
+   glass. Any failure leaves the GLASS PASS 2 clear-glass CSS untouched. */
+(function(){
+  try{
+    if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var probe = document.createElement("div");
+    probe.style.backdropFilter = "url(#lgProbe)";
+    if (!probe.style.backdropFilter || probe.style.backdropFilter.indexOf("url") < 0) return;
+    var nav = document.querySelector(".nav");
+    var fe = document.getElementById("lgMap");
+    if (!nav || !fe) return;
+    var SCALE = 46, BAND = 16, MAXSHIFT = 11;
+    function build(){
+      var r = nav.getBoundingClientRect();
+      var W = Math.max(2, Math.round(r.width)), H = Math.max(2, Math.round(r.height));
+      var rad = H / 2, cx = W / 2, cy = H / 2;
+      var cv = document.createElement("canvas"); cv.width = W; cv.height = H;
+      var ctx = cv.getContext("2d");
+      var img = ctx.createImageData(W, H), d = img.data;
+      for (var y = 0; y < H; y++){
+        for (var x = 0; x < W; x++){
+          var qx = Math.abs(x - cx) - (cx - rad), qy = Math.abs(y - cy) - (cy - rad);
+          var ax = Math.max(qx, 0), ay = Math.max(qy, 0);
+          var dist = Math.hypot(ax, ay) + Math.min(Math.max(qx, qy), 0) - rad;
+          var depth = -dist, R = 128, G = 128;
+          if (depth < BAND){
+            var px = Math.min(Math.max(x, rad), W - rad), py = Math.min(Math.max(y, rad), H - rad);
+            var nx = x - px, ny = y - py, len = Math.hypot(nx, ny) || 1;
+            nx /= len; ny /= len;
+            var t = 1 - Math.max(depth, 0) / BAND, m = MAXSHIFT * t * t;
+            R = 128 + (-nx * m / SCALE) * 255;
+            G = 128 + (-ny * m / SCALE) * 255;
+          }
+          var i = (y * W + x) * 4;
+          d[i] = R; d[i + 1] = G; d[i + 2] = 128; d[i + 3] = 255;
+        }
+      }
+      ctx.putImageData(img, 0, 0);
+      var url = cv.toDataURL("image/png");
+      fe.setAttribute("href", url);
+      try{ fe.setAttributeNS("http://www.w3.org/1999/xlink", "xlink:href", url); }catch(e){}
+      fe.setAttribute("width", W); fe.setAttribute("height", H);
+      var v = "url(#lgLens) blur(2px) saturate(1.7) brightness(1.06)";
+      nav.style.setProperty("backdrop-filter", v, "important");
+      nav.style.setProperty("-webkit-backdrop-filter", v, "important");
+    }
+    build();
+    var t; window.addEventListener("resize", function(){ clearTimeout(t); t = setTimeout(build, 250); });
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
