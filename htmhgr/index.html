@@ -229,6 +229,7 @@
   }
 
 </style></noscript>
+<script>(function(){try{var p=JSON.parse(localStorage.getItem("htmhgr_prefs")||"{}");var d=document.documentElement;if(p.theme==="light")d.setAttribute("data-theme","light");if(p.lang==="en"){d.lang="en";d.dir="ltr";}else{d.lang="ar";d.dir="rtl";}}catch(e){}})();</script>
 <script async src="https://telegram.org/js/telegram-web-app.js" onload="window.__tgInit&&window.__tgInit()"></script>
 <script>
 /* Telegram keeps its native loading placeholder up until the app calls
@@ -1156,6 +1157,51 @@ html{background:#0A0C12!important}
   animation:iconPop .55s var(--spring) both;
 }
 .nav button:active .nico{transform:scale(.88)}
+
+/* ===== V15 — measured Verifier geometry, animated emoji, day mode ===== */
+:root{--bg:#0A0B0F}
+html{background:#0A0B0F!important}
+body{background:#0A0B0F!important}
+body:before{background:none!important}
+html body #splash{background:#05070A!important;background-image:linear-gradient(180deg,#12151D 0%,#05070A 100%)!important}
+.nav{inset-inline:12.5%!important;padding:6px!important}
+.nav button .nico{padding:4px 13px}
+.nav button .nico img{width:25px;height:25px;display:block}
+.tico img{width:17px;height:17px;display:block}
+.brand .mark.robo img{width:20px;height:20px;display:block}
+.sp-emoji img{width:74px;height:74px;display:block;margin:0 auto}
+.streak img{width:15px;height:15px;vertical-align:-3px;margin-inline-end:5px}
+.segpill{display:inline-flex;gap:3px;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.10);border-radius:999px;padding:3px;flex-shrink:0}
+.segpill button{border:none;background:transparent;color:var(--muted);font-family:inherit;font-size:12.5px;font-weight:700;padding:6px 14px;border-radius:999px;cursor:pointer}
+.segpill button.on{background:#FFFFFF;color:#10131A;box-shadow:0 3px 10px rgba(0,0,0,.35)}
+#prefsCard .srow{align-items:center}
+/* ----- day (light) theme: same geometry, light tokens ----- */
+html[data-theme="light"]{--bg:#F4F6F9;--card:#FFFFFF;--ink:#14181F;--muted:#68707D;--line:rgba(20,24,31,.09);--track:rgba(20,24,31,.08);--chip:rgba(20,24,31,.06);--red:#14181F;--red-deep:#14181F;background:#F4F6F9!important}
+html[data-theme="light"] body{background:#F4F6F9!important;color:#14181F}
+html[data-theme="light"] .sky:before{background:radial-gradient(circle at 83% 18%,rgba(255,255,255,.65),transparent 26%),linear-gradient(180deg,#DFE5EC 0%,#EDF0F4 55%,#F4F6F9 100%)!important;box-shadow:inset 0 -42px 65px rgba(120,130,150,.12)!important}
+html[data-theme="light"] #splash{background:#EDF0F4!important;background-image:linear-gradient(180deg,#FFFFFF 0%,#EDF0F4 100%)!important}
+html[data-theme="light"] .card{background:#FFFFFF!important;border:1px solid rgba(20,24,31,.08)!important;box-shadow:0 10px 30px rgba(30,40,60,.08),inset 0 1px 0 rgba(255,255,255,.9)!important}
+html[data-theme="light"] .tile{background:#FFFFFF!important;border-color:rgba(20,24,31,.14)!important}
+html[data-theme="light"] .how-card,html[data-theme="light"] .presence{background:#FFFFFF!important;border:1px solid rgba(20,24,31,.08)!important;box-shadow:0 10px 26px rgba(30,40,60,.07)!important}
+html[data-theme="light"] .welcome-card{background:linear-gradient(160deg,#FFFFFF,#F1F4F8)!important;border:1px solid rgba(20,24,31,.08)!important;box-shadow:0 14px 34px rgba(30,40,60,.09)!important}
+html[data-theme="light"] .welcome-card h1 em{color:#14181F}
+html[data-theme="light"] .welcome-features>div{background:rgba(20,24,31,.04)!important;border:1px solid rgba(20,24,31,.07)!important}
+html[data-theme="light"] .talk,html[data-theme="light"] .brand,html[data-theme="light"] .streak{background:rgba(255,255,255,.66)!important;border:1px solid rgba(20,24,31,.09)!important;box-shadow:0 8px 22px rgba(30,40,60,.10),inset 0 1px 0 rgba(255,255,255,.9)!important;color:#14181F}
+html[data-theme="light"] .brand .mark.robo{background:rgba(20,24,31,.06)}
+html[data-theme="light"] .nav{background:linear-gradient(180deg,rgba(255,255,255,.82),rgba(255,255,255,.70))!important;border:1px solid rgba(20,24,31,.09)!important;box-shadow:0 18px 44px rgba(30,40,60,.16),inset 0 1px 0 rgba(255,255,255,.95)!important}
+html[data-theme="light"] .nav button{color:#68707D!important}
+html[data-theme="light"] .nav button.on{color:#14181F!important}
+html[data-theme="light"] .nav button.on .nico{background:rgba(20,24,31,.08);box-shadow:inset 0 1px 0 rgba(255,255,255,.8),0 4px 12px rgba(30,40,60,.12)}
+html[data-theme="light"] .srow .ric,html[data-theme="light"] .row .ric{background:rgba(20,24,31,.05)!important;color:#14181F!important}
+html[data-theme="light"] .bar{background:rgba(20,24,31,.10)!important}
+html[data-theme="light"] .dash-stats>div{background:#F7F8FA!important;border:1px solid rgba(20,24,31,.07)!important}
+html[data-theme="light"] .dash-stats b{color:#14181F!important}
+html[data-theme="light"] .dash-stats span{color:#68707D!important}
+html[data-theme="light"] .dash-hint{background:rgba(20,24,31,.05)!important;border:1px solid rgba(20,24,31,.08)!important;color:#4A5261!important}
+html[data-theme="light"] .segs i.on{background:#14181F!important}
+html[data-theme="light"] .segpill{background:rgba(20,24,31,.05);border-color:rgba(20,24,31,.09)}
+html[data-theme="light"] .segpill button.on{background:#14181F;color:#FFFFFF;box-shadow:0 3px 10px rgba(30,40,60,.25)}
+html[data-theme="light"] .sp-name{color:#14181F}
 </style>
 
 </head>
@@ -1171,7 +1217,7 @@ html{background:#0A0C12!important}
 </svg>
 
 <div id="splash">
-  <div class="sp-emoji">🤖</div>
+  <div class="sp-emoji"><img class="aemo" src="emoji/robot.webp" alt=""></div>
   <div class="sp-name">HTMHGR</div>
   <div class="sp-tag">مساعد قناة الذكاء الاصطناعي</div>
 </div>
@@ -1180,19 +1226,19 @@ html{background:#0A0C12!important}
 <div class="view on" id="view-home">
   <div class="sky">
     <div class="topbar">
-      <button class="talk" id="talkBtn"><span class="tico">💬</span>
+      <button class="talk" id="talkBtn"><span class="tico"><img class="aemo" src="emoji/speech.webp" alt=""></span>
         كلّم البوت
       </button>
       <div class="brand">
-        <span class="mark robo">🤖</span>
+        <span class="mark robo"><img class="aemo" src="emoji/robot.webp" alt=""></span>
         <b>HTMHGR</b>
       </div>
     </div>
     <div class="greet display" id="greet">مساء الخير.</div>
     <div class="meta"><span id="dateline"></span><span id="wx"></span></div>
     <div class="pills">
-      <span class="streak" id="pillPoints">⭐ نقاطك ٠</span>
-      <span class="streak" id="pillStreak">🔥 سلسلتك ٠ يوم</span>
+      <span class="streak" id="pillPoints"><img class="aemo" src="emoji/star.webp" alt=""><span id="pillPointsTxt">نقاطك ٠</span></span>
+      <span class="streak" id="pillStreak"><img class="aemo" src="emoji/fire.webp" alt=""><span id="pillStreakTxt">سلسلتك ٠ يوم</span></span>
     </div>
   </div>
 
@@ -1411,6 +1457,10 @@ html{background:#0A0C12!important}
 <div class="view" id="view-menu">
   <div class="pad">
     <div class="vtitle display">القائمة</div>
+    <section class="card group" id="prefsCard" style="margin-top:6px">
+      <div class="srow"><div class="t"><b>اللغة</b></div><span class="segpill"><button type="button" data-lang-btn="ar" class="on">عربي</button><button type="button" data-lang-btn="en">English</button></span></div>
+      <div class="srow"><div class="t"><b>المظهر</b></div><span class="segpill"><button type="button" data-theme-btn="dark" class="on">ليلي</button><button type="button" data-theme-btn="light">نهاري</button></span></div>
+    </section>
     <section class="card" id="dashCard" style="margin-top:6px">
       <div class="card-h">
         <h2 class="display">لوحتك</h2>
@@ -1462,11 +1512,11 @@ html{background:#0A0C12!important}
 </div>
 
 <nav class="nav">
-  <button data-nav="view-home" class="on"><span class="nico">🏠</span>الرئيسية</button>
-  <button data-nav="view-skills"><span class="nico">🧩</span>المهارات</button>
-  <button data-nav="view-characters"><span class="nico">🤖</span>المساعد</button>
-  <button data-nav="view-feed"><span class="nico">📰</span>النشاط</button>
-  <button data-nav="view-menu"><span class="nico">👤</span>القائمة</button>
+  <button data-nav="view-home" class="on"><span class="nico"><img class="aemo" src="emoji/house.webp" alt=""></span>الرئيسية</button>
+  <button data-nav="view-skills"><span class="nico"><img class="aemo" src="emoji/sparkles.webp" alt=""></span>المهارات</button>
+  <button data-nav="view-characters"><span class="nico"><img class="aemo" src="emoji/robot.webp" alt=""></span>المساعد</button>
+  <button data-nav="view-feed"><span class="nico"><img class="aemo" src="emoji/newspaper.webp" alt=""></span>النشاط</button>
+  <button data-nav="view-menu"><span class="nico"><img class="aemo" src="emoji/person.webp" alt=""></span>القائمة</button>
 </nav>
 
 <script>
@@ -1477,35 +1527,189 @@ html{background:#0A0C12!important}
   var tg = null;
   var user = null;
   var AR_DIGITS = "٠١٢٣٤٥٦٧٨٩";
+  var LANG = "ar";
+  var THEME = "dark";
+  var prefs = {};
+  try{ prefs = JSON.parse(localStorage.getItem("htmhgr_prefs") || "{}") || {}; }catch(e){ prefs = {}; }
+  if (prefs.lang === "en" || prefs.lang === "ar") LANG = prefs.lang;
+  if (prefs.theme === "light" || prefs.theme === "dark") THEME = prefs.theme;
+  var EN = {
+    "واجهة بوت HTMHGR": "HTMHGR Bot Interface",
+    "مساعد قناة الذكاء الاصطناعي": "AI channel assistant",
+    "كلّم البوت": "Talk to the bot",
+    "صباح الخير": "Good morning",
+    "نهارك سعيد": "Have a good day",
+    "مساء الخير": "Good evening",
+    "مساء الخير.": "Good evening.",
+    "لسّا صاحي؟": "Still up?",
+    "دليلك السريع": "Your quick guide",
+    "أهلاً بك في": "Welcome to",
+    "مساعدك الذكي في عالم الذكاء الاصطناعي. اسأل، اكتشف الأدوات، تابع آخر المستجدات، واجمع النقاط مع كل إنجاز حقيقي.": "Your smart assistant in the world of AI. Ask questions, discover tools, follow the latest updates, and earn points for every real achievement.",
+    "اسأل وتعلّم": "Ask & learn",
+    "إجابات ومساعدة ذكية": "Smart answers and help",
+    "اكتشف الأدوات": "Discover tools",
+    "مهارات وخدمات مفيدة": "Useful skills and services",
+    "تابع الجديد": "Follow what's new",
+    "أخبار وتحديثات AI": "AI news and updates",
+    "أنجز المهام الموثّقة واجمع النقاط": "Complete verified tasks and earn points",
+    "ابدأ رحلتك": "Start your journey",
+    "كيف تعمل المكافآت؟": "How do rewards work?",
+    "نفّذ المهمة، ودع البوت يتحقق منها. لن تظهر مكتملة ولن تُضاف نقاطها إلا بعد تأكيد الخادم.": "Complete the task and let the bot verify it. It only shows as complete — and its points are only added — after the server confirms it.",
+    "رحلتك ومكافآتك": "Your journey & rewards",
+    "تقدّمك في المهام": "Your task progress",
+    "إخفاء": "Hide",
+    "إظهار": "Show",
+    "ابدأ محادثة مع البوت": "Start a chat with the bot",
+    "أول خطوة — أنجزتها بفتحك هذه الواجهة": "First step — done by opening this interface",
+    "الأساس": "Base",
+    "اسأل البوت أول سؤال": "Ask the bot your first question",
+    "أي سؤال عن الذكاء الاصطناعي أو غيره": "Any question, about AI or anything else",
+    "ادعُ صديقاً برابطك": "Invite a friend with your link",
+    "أعلى مكافأة في النظام كله": "The biggest reward in the whole system",
+    "حافظ على نشاطك اليومي": "Keep up your daily activity",
+    "أيام متتالية تعني مكافآت إضافية": "Consecutive days mean extra rewards",
+    "افتح واجهة البوت": "Open the bot interface",
+    "لم تكتمل بعد": "Not completed yet",
+    "برابطك الخاص — أعلى مكافأة في النظام": "With your personal link — the biggest reward in the system",
+    "ارجع غداً وحافظ على سلسلتك": "Come back tomorrow and keep your streak",
+    "مساعد HTMHGR": "HTMHGR Assistant",
+    "يرد على الأسئلة الآن": "Answering questions now",
+    "أدواتك": "Your tools",
+    "كل المهارات ←": "All skills →",
+    "اكتشف": "Discover",
+    "اطلب شيئاً": "Request something",
+    "مهاراتك": "Your skills",
+    "تصفح الكل ←": "Browse all →",
+    "أضف طلباً": "Add a request",
+    "أشياء ينجزها لك المشرف بنفسه": "Things the supervisor does for you personally",
+    "اكتبه ويبدأ اليوم": "Write it and it starts today",
+    "أشياء ينجزها لك المشرف بنفسه. اكتبه ويبدأ اليوم": "Things the supervisor does for you personally. Write it and it starts today",
+    "اليوم": "Today",
+    "نشاطي": "My activity",
+    "آخر نقاط كسبتها ولماذا": "The latest points you earned, and why",
+    "القناة": "Channel",
+    "أخبار الذكاء الاصطناعي أولاً بأول": "AI news as it happens",
+    "آخر أخبار الذكاء الاصطناعي": "The latest AI news",
+    "المميزات والاشتراكات": "Perks & subscriptions",
+    "اشتراك النجوم قادم قريباً": "Stars subscription coming soon",
+    "رتب ومزايا واشتراك النجوم": "Ranks, perks and the Stars subscription",
+    "قريباً": "Soon",
+    "لوحة": "Board",
+    "اسأل البوت": "Ask the bot",
+    "جواب فوري مرح على أي سؤال": "A fun, instant answer to any question",
+    "نقاطي ورتبتي": "My points & rank",
+    "لوحتك الكاملة في صفحة القائمة": "Your full dashboard is on the Menu page",
+    "رابط دعوتي": "My invite link",
+    "لكل صديق يدخل من رابطك": "For every friend who joins through your link",
+    "مساعدك": "Your assistant",
+    "اطلب بحثاً": "Request research",
+    "كيف يشتغل؟": "How does it work?",
+    "اسأله في المجموعة أو الخاص": "Ask it in the group or in private",
+    "يرد عليك خلال ثوانٍ": "It replies within seconds",
+    "والطلبات توصل للمشرف": "Requests reach the supervisor",
+    "يراجعها ويرسل لك النتيجة على الخاص": "He reviews them and sends you the result in private",
+    "النشاط": "Activity",
+    "أشياء كسبتها مع البوت": "Things you earned with the bot",
+    "سلسلة الأيام": "Day streak",
+    "نشاطك اليومي مع البوت": "Your daily activity with the bot",
+    "المكافآت": "Rewards",
+    "أعلى مكافأة: دعوة صديق": "Biggest reward: inviting a friend",
+    "القائمة": "Menu",
+    "لوحتك": "Your dashboard",
+    "نقطة عندك": "points",
+    "يوم نشاط متتالٍ": "consecutive active days",
+    "عضو دعوته برابطك": "members invited by your link",
+    "افتح الواجهة من رسالة البوت في الخاص علشان تظهر بياناتك هنا": "Open the interface from the bot's message in your private chat so your data shows here",
+    "الرتب والمميزات": "Ranks & perks",
+    "عضو": "Member",
+    "نشيط": "Active",
+    "مميز": "Featured",
+    "ذهبي": "Gold",
+    "أسطوري": "Legendary",
+    "من ٠ نقطة": "From 0 points",
+    "من ١٠٠ — بطاقة ولقب": "From 100 — card & title",
+    "من ٣٠٠ — أولوية رد": "From 300 — reply priority",
+    "من ٧٠٠ — بحث معمق شهرياً": "From 700 — monthly deep research",
+    "من ١٥٠٠ — اشتراك مجاني عند الإطلاق": "From 1500 — free subscription at launch",
+    "مساعد قناة ومجموعة أخبار الذكاء الاصطناعي": "Assistant of the AI news channel & group",
+    "· المشرف": "· Supervisor",
+    "الرئيسية": "Home",
+    "المهارات": "Skills",
+    "المساعد": "Assistant",
+    "اللغة": "Language",
+    "المظهر": "Appearance",
+    "ليلي": "Dark",
+    "نهاري": "Light",
+    "مكتملة ومؤكدة": "Completed & verified",
+    "بانتظار تحقق البوت": "Waiting for bot verification",
+    "قيد التحقق": "Verifying",
+    "✓ مؤكدة": "✓ Verified",
+    "أنت في أعلى رتبة 👑": "You are at the top rank 👑",
+    "رابط دعوتك 🎁": "Your invite link 🎁",
+    "شارك الرابط مع صديق. ستُحتسب المكافأة فقط بعد انضمامه بنجاح وتأكيد الخادم للدعوة. ": "Share the link with a friend. The reward is only counted after they join successfully and the server confirms the invite. ",
+    "تمام": "OK",
+    "انسخ رابط دعوتك وشاركه:": "Copy your invite link and share it:",
+    "🌱 عضو": "🌱 Member",
+    "🔥 نشيط": "🔥 Active",
+    "⭐ مميز": "⭐ Featured",
+    "💎 ذهبي": "💎 Gold",
+    "👑 أسطوري": "👑 Legendary",
+    "+٢": "+2",
+    "+٢٠": "+20",
+    "+٥": "+5",
+    "‹": "›"
+  };
+  function t(s){ return LANG === "en" ? (EN[s] || s) : s; }
+  function fmt(n){ return LANG === "en" ? String(n) : arDigits(n); }
+  var LVL_NAMES_EN = ["🌱 Member", "🔥 Active", "⭐ Featured", "💎 Gold", "👑 Legendary"];
+  function levelName(idx){ return LANG === "en" ? LVL_NAMES_EN[idx] : LEVEL_NAMES[idx]; }
+  var REWARDS = {start: ["الأساس", "Base"], ask: ["+٢", "+2"], invite: ["+٢٠", "+20"], streak: ["+٥", "+5"]};
+  function rewardFor(k){ var r = REWARDS[k]; return r ? r[LANG === "en" ? 1 : 0] : ""; }
+  var lastWxC = null;
+  function renderWx(){
+    if (lastWxC === null) return;
+    var el = document.getElementById("wx");
+    if (el) el.textContent = LANG === "en" ? (" · Sanaa " + lastWxC + "°") : (" · صنعاء " + arDigits(lastWxC) + "°");
+  }
+
   function arDigits(n){
     return String(n).replace(/\d/g, function(d){ return AR_DIGITS[d]; });
   }
   function renderGreet(){
     var h = new Date().getHours();
     var el = document.getElementById("greet");
-    if (h >= 0 && h < 5){ el.textContent = "لسّا صاحي؟"; return; }
-    var greetWord = h < 12 ? "صباح الخير" : (h < 18 ? "نهارك سعيد" : "مساء الخير");
+    if (h >= 0 && h < 5){ el.textContent = t("لسّا صاحي؟"); return; }
+    var greetWord = t(h < 12 ? "صباح الخير" : (h < 18 ? "نهارك سعيد" : "مساء الخير"));
     var first = user && user.first_name ? user.first_name : "";
     el.innerHTML =
-      greetWord + (first ? "، " + first.replace(/[<>&]/g,"") : "") + ".";
+      greetWord + (first ? (LANG === "en" ? ", " : "، ") + first.replace(/[<>&]/g,"") : "") + ".";
   }
   function bindTg(){
     tg = window.Telegram && window.Telegram.WebApp;
     if (!tg) return;
     try{ tg.ready(); tg.expand(); }catch(e){}
     user = (tg.initDataUnsafe && tg.initDataUnsafe.user) || null;
+    try{
+      if (!prefs.lang && user && user.language_code && String(user.language_code).indexOf("en") === 0) LANG = "en";
+    }catch(e){}
+    try{ if (!prefs.theme && tg.colorScheme === "light") THEME = "light"; }catch(e){}
+    try{ applyLang(LANG); }catch(e){}
+    try{ applyTheme(THEME); }catch(e){}
+    try{ syncPrefsFromCloud(); }catch(e){}
     renderGreet();
     try{ loadSteps(); }catch(e){}
     try{ initDash(); }catch(e){}
   }
   window.__tgInit = bindTg;
 
-  var now = new Date();
   renderGreet();
-  try{
-    document.getElementById("dateline").textContent =
-      now.toLocaleDateString("ar", {weekday:"long", day:"numeric", month:"long"});
-  }catch(e){}
+  function renderMeta(){
+    try{
+      document.getElementById("dateline").textContent =
+        new Date().toLocaleDateString(LANG === "en" ? "en" : "ar", {weekday:"long", day:"numeric", month:"long"});
+    }catch(e){}
+  }
+  renderMeta();
 
   /* live Sanaa weather in the meta line (Open-Meteo, no key);
      fails silently on weak networks */
@@ -1514,8 +1718,8 @@ html{background:#0A0C12!important}
       .then(function(r){ return r.json(); })
       .then(function(j){
         if (j && j.current && typeof j.current.temperature_2m === "number"){
-          var t = arDigits(Math.round(j.current.temperature_2m));
-          document.getElementById("wx").textContent = " · صنعاء " + t + "°";
+          lastWxC = Math.round(j.current.temperature_2m);
+          renderWx();
         }
       }).catch(function(){});
   }catch(e){}
@@ -1528,7 +1732,7 @@ html{background:#0A0C12!important}
   function paintHide(){
     if (!hideBtn || !setupBody) return;
     setupBody.style.display = setupHidden ? "none" : "";
-    hideBtn.textContent = setupHidden ? "إظهار" : "إخفاء";
+    hideBtn.textContent = t(setupHidden ? "إظهار" : "إخفاء");
   }
   if (hideBtn) hideBtn.addEventListener("click", function(){
     setupHidden = !setupHidden;
@@ -1566,7 +1770,7 @@ html{background:#0A0C12!important}
     var done = 0;
     Object.keys(steps).forEach(function(k){ if (steps[k]) done++; });
     var ar = ["٠","١","٢","٣","٤"];
-    var txt = "موثّق " + ar[done] + " من ٤";
+    var txt = LANG === "en" ? ("Verified " + done + " of 4") : ("موثّق " + ar[done] + " من ٤");
     document.getElementById("progText").textContent = txt;
     document.getElementById("setupText").textContent = txt;
     document.getElementById("setupBar").style.width = (done/4*100) + "%";
@@ -1580,12 +1784,12 @@ html{background:#0A0C12!important}
       var ck = el.querySelector(".ck");
       ck.innerHTML = steps[k] ? CHECK : (pendingSteps[k] ? "…" : "");
       var status = el.querySelector(".task-status");
-      if (status) status.textContent = steps[k] ? "مكتملة ومؤكدة" : (pendingSteps[k] ? "بانتظار تحقق البوت" : "لم تكتمل بعد");
+      if (status) status.textContent = t(steps[k] ? "مكتملة ومؤكدة" : (pendingSteps[k] ? "بانتظار تحقق البوت" : "لم تكتمل بعد"));
     });
     document.querySelectorAll("[data-chip]").forEach(function(el){
       var k = el.getAttribute("data-chip");
       el.classList.toggle("done", !!steps[k]);
-      el.textContent = steps[k] ? "✓ مؤكدة" : (pendingSteps[k] ? "قيد التحقق" : el.getAttribute("data-reward"));
+      el.textContent = steps[k] ? t("✓ مؤكدة") : (pendingSteps[k] ? t("قيد التحقق") : rewardFor(k));
     });
   }
   function saveSteps(){
@@ -1638,10 +1842,10 @@ html{background:#0A0C12!important}
     pendingSteps.invite = true; renderSteps();
     var link = inviteLink();
     if (navigator.clipboard) navigator.clipboard.writeText(link).catch(function(){});
-    if (tg && tg.showPopup) tg.showPopup({title:"رابط دعوتك 🎁",
-      message:"شارك الرابط مع صديق. ستُحتسب المكافأة فقط بعد انضمامه بنجاح وتأكيد الخادم للدعوة. " + link,
-      buttons:[{type:"ok", text:"تمام"}]});
-    else window.prompt("انسخ رابط دعوتك وشاركه:", link);
+    if (tg && tg.showPopup) tg.showPopup({title:t("رابط دعوتك 🎁"),
+      message:t("شارك الرابط مع صديق. ستُحتسب المكافأة فقط بعد انضمامه بنجاح وتأكيد الخادم للدعوة. ") + link,
+      buttons:[{type:"ok", text:t("تمام")}]});
+    else window.prompt(t("انسخ رابط دعوتك وشاركه:"), link);
   }
 
   document.getElementById("talkBtn").addEventListener("click", function(){
@@ -1709,14 +1913,14 @@ html{background:#0A0C12!important}
     var total = d ? (d.t | 0) : 0;
     var streak = d ? (d.s | 0) : 0;
     var idx = levelFor(total);
-    var pp = document.getElementById("pillPoints");
-    if (pp) pp.textContent = "⭐ نقاطك " + arDigits(total);
-    var ps = document.getElementById("pillStreak");
-    if (ps) ps.textContent = "🔥 سلسلتك " + arDigits(streak) + " يوم";
+    var pp = document.getElementById("pillPointsTxt");
+    if (pp) pp.textContent = LANG === "en" ? ("Points " + total) : ("نقاطك " + arDigits(total));
+    var ps = document.getElementById("pillStreakTxt");
+    if (ps) ps.textContent = LANG === "en" ? (streak + "-day streak") : ("سلسلتك " + arDigits(streak) + " يوم");
     var lv = document.getElementById("dashLevel");
-    if (lv) lv.textContent = (d && d.lv) ? d.lv : LEVEL_NAMES[idx];
+    if (lv) lv.textContent = levelName(idx);
     var dt = document.getElementById("dashTotal");
-    if (dt) dt.textContent = arDigits(total);
+    if (dt) dt.textContent = fmt(total);
     var pct = 100;
     if (idx < THRESH.length - 1){
       pct = Math.round((total - THRESH[idx]) / (THRESH[idx + 1] - THRESH[idx]) * 100);
@@ -1726,18 +1930,21 @@ html{background:#0A0C12!important}
     var nx = document.getElementById("dashNext");
     if (nx){
       if (d && d.nx){
-        nx.textContent = "يتبقى لك " + arDigits(d.rem | 0) + " نقطة لرتبة " + d.nx;
+        nx.textContent = LANG === "en"
+          ? ((d.rem | 0) + " points to reach " + levelName(idx + 1))
+          : ("يتبقى لك " + arDigits(d.rem | 0) + " نقطة لرتبة " + levelName(idx + 1));
       } else if (idx >= THRESH.length - 1){
-        nx.textContent = "أنت في أعلى رتبة 👑";
+        nx.textContent = t("أنت في أعلى رتبة 👑");
       } else {
-        nx.textContent = "يتبقى لك " + arDigits(THRESH[idx + 1] - total) +
-          " نقطة لرتبة " + LEVEL_NAMES[idx + 1];
+        nx.textContent = LANG === "en"
+          ? ((THRESH[idx + 1] - total) + " points to reach " + levelName(idx + 1))
+          : ("يتبقى لك " + arDigits(THRESH[idx + 1] - total) + " نقطة لرتبة " + levelName(idx + 1));
       }
     }
     var ds = document.getElementById("dashStreak");
-    if (ds) ds.textContent = arDigits(streak);
+    if (ds) ds.textContent = fmt(streak);
     var di = document.getElementById("dashInvited");
-    if (di) di.textContent = arDigits(d ? (d.i | 0) : 0);
+    if (di) di.textContent = fmt(d ? (d.i | 0) : 0);
     var acts = document.getElementById("dashActs");
     if (acts){
       acts.innerHTML = "";
@@ -1747,7 +1954,7 @@ html{background:#0A0C12!important}
         row.className = "drow";
         var dl = document.createElement("span");
         dl.className = "delta " + (delta >= 0 ? "plus" : "minus");
-        dl.textContent = (delta >= 0 ? "+" : "−") + arDigits(Math.abs(delta));
+        dl.textContent = (delta >= 0 ? "+" : "−") + fmt(Math.abs(delta));
         var wy = document.createElement("span");
         wy.className = "why";
         wy.textContent = String(pair[1] || "");
@@ -1792,6 +1999,103 @@ html{background:#0A0C12!important}
     }
   }
   try{ initDash(); }catch(e){}
+
+  /* ---------- language & theme engine (v15) ---------- */
+  var textNodesAR = null;
+  var cloudReady = false;
+  function collectTextNodes(){
+    var out = [];
+    if (!document.body || !document.createTreeWalker) return out;
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(n){
+        var p = n.parentNode;
+        while (p){
+          var tag = p.tagName;
+          if (tag === "SCRIPT" || tag === "STYLE" || tag === "svg") return NodeFilter.FILTER_REJECT;
+          p = p.parentNode;
+        }
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var n;
+    while ((n = walker.nextNode())) out.push({node: n, ar: n.nodeValue});
+    return out;
+  }
+  function savePrefs(){
+    prefs = {lang: LANG, theme: THEME};
+    try{ localStorage.setItem("htmhgr_prefs", JSON.stringify(prefs)); }catch(e){}
+    try{
+      if (cloudReady && tg && tg.CloudStorage)
+        tg.CloudStorage.setItem("htmhgr_prefs", JSON.stringify(prefs), function(){});
+    }catch(e){}
+  }
+  function syncPrefsFromCloud(){
+    if (!tg || !tg.CloudStorage){ cloudReady = true; return; }
+    try{
+      tg.CloudStorage.getItem("htmhgr_prefs", function(err, val){
+        cloudReady = true;
+        if (err || !val) return;
+        try{
+          var p = JSON.parse(val);
+          var changed = false;
+          if ((p.lang === "en" || p.lang === "ar") && p.lang !== LANG){ LANG = p.lang; changed = true; }
+          if ((p.theme === "light" || p.theme === "dark") && p.theme !== THEME){ THEME = p.theme; changed = true; }
+          if (changed){ applyLang(LANG); applyTheme(THEME); }
+        }catch(e){}
+      });
+    }catch(e){ cloudReady = true; }
+  }
+  function applyLang(l){
+    LANG = (l === "en") ? "en" : "ar";
+    var d = document.documentElement;
+    d.lang = LANG;
+    d.dir = LANG === "en" ? "ltr" : "rtl";
+    try{ document.title = t("واجهة بوت HTMHGR"); }catch(e){}
+    if (!textNodesAR) textNodesAR = collectTextNodes();
+    textNodesAR.forEach(function(rec){
+      if (LANG === "ar"){ rec.node.nodeValue = rec.ar; return; }
+      var m = /^(\s*)([\s\S]*?)(\s*)$/.exec(rec.ar);
+      if (!m) return;
+      var core = m[2];
+      rec.node.nodeValue = m[1] + (EN[core] || core) + m[3];
+    });
+    document.querySelectorAll("[data-lang-btn]").forEach(function(b){
+      b.classList.toggle("on", b.getAttribute("data-lang-btn") === LANG);
+    });
+    try{ renderGreet(); }catch(e){}
+    try{ renderMeta(); }catch(e){}
+    try{ renderWx(); }catch(e){}
+    try{ paintHide(); }catch(e){}
+    try{ renderSteps(); }catch(e){}
+    try{ renderDash(); }catch(e){}
+    savePrefs();
+  }
+  function applyTheme(th){
+    THEME = (th === "light") ? "light" : "dark";
+    var d = document.documentElement;
+    if (THEME === "light") d.setAttribute("data-theme", "light");
+    else d.removeAttribute("data-theme");
+    document.querySelectorAll("[data-theme-btn]").forEach(function(b){
+      b.classList.toggle("on", b.getAttribute("data-theme-btn") === THEME);
+    });
+    try{
+      if (tg){
+        var bg = THEME === "light" ? "#F4F6F9" : "#0A0B0F";
+        if (tg.setBackgroundColor) tg.setBackgroundColor(bg);
+        if (tg.setHeaderColor) tg.setHeaderColor(bg);
+        if (tg.setBottomBarColor) tg.setBottomBarColor(bg);
+      }
+    }catch(e){}
+    savePrefs();
+  }
+  document.querySelectorAll("[data-lang-btn]").forEach(function(b){
+    b.addEventListener("click", function(){ try{ applyLang(b.getAttribute("data-lang-btn")); }catch(e){} });
+  });
+  document.querySelectorAll("[data-theme-btn]").forEach(function(b){
+    b.addEventListener("click", function(){ try{ applyTheme(b.getAttribute("data-theme-btn")); }catch(e){} });
+  });
+  try{ applyLang(LANG); }catch(e){}
+  try{ applyTheme(THEME); }catch(e){}
 })();
 </script>
 
