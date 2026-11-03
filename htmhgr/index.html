@@ -1092,6 +1092,70 @@ body{color:#EDF2F8}
 .nav button{color:#8FA3BC!important}
 .nav button.on{color:#FFFFFF!important;background:linear-gradient(180deg,rgba(255,255,255,.16),rgba(255,255,255,.07))!important}
 .nav button.on svg{color:#13233D}
+
+/* ===== VERIFIER PASS — millimeter clone of the Verifier app language =====
+   Neutral charcoal (zero blue), flat charcoal cards, Telegram-style emoji
+   icons, Verifier nav geometry. Measured from Mustafa's screenshot. */
+:root{
+  --bg:#0A0C12; --card:#12151D; --ink:#F4F6FA; --muted:#8A93A3;
+  --line:rgba(255,255,255,.08); --track:rgba(255,255,255,.10);
+  --chip:rgba(255,255,255,.07); --red:#FFFFFF; --red-deep:#FFFFFF;
+}
+html{background:#0A0C12!important}
+.sky:before{
+  background:
+    radial-gradient(circle at 83% 18%,rgba(255,255,255,.06),transparent 24%),
+    radial-gradient(circle at 10% 60%,rgba(255,255,255,.035),transparent 30%),
+    linear-gradient(180deg,#171B24 0%,#10131A 55%,#0A0C12 100%)!important;
+  box-shadow:inset 0 -42px 65px rgba(0,0,0,.30)!important;
+}
+#splash{background:linear-gradient(180deg,#141821 0%,#0A0C12 100%)}
+.sp-emoji{font-size:64px;line-height:1;animation:iconPop .6s var(--spring) both}
+.card{
+  background:linear-gradient(180deg,#151922,#12151D)!important;
+  border:1px solid rgba(255,255,255,.07)!important;border-radius:20px!important;
+  box-shadow:0 10px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.04)!important;
+}
+.tile{background:#12151D!important;border-color:rgba(255,255,255,.16)!important;border-radius:20px!important}
+.how-card,.presence{background:#12151D!important;border:1px solid rgba(255,255,255,.07)!important;box-shadow:0 10px 26px rgba(0,0,0,.3)!important}
+.welcome-card{
+  background:linear-gradient(160deg,#1A1F2B,#12151D)!important;
+  border:1px solid rgba(255,255,255,.08)!important;border-radius:20px!important;
+  box-shadow:0 14px 34px rgba(0,0,0,.4)!important;
+}
+.welcome-card h1 em{color:#fff}
+.welcome-features>div{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.08)!important}
+.segs i.on{background:#fff!important;box-shadow:none!important}
+.dash-stats>div{background:#171B25!important;border:1px solid rgba(255,255,255,.07)!important}
+.dash-hint{background:rgba(255,255,255,.05)!important;border:1px solid rgba(255,255,255,.08)!important;color:#C7D0DC!important}
+.srow .ric,.row .ric{background:rgba(255,255,255,.06)!important;color:#fff!important}
+.talk,.brand,.streak{
+  background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.09)!important;
+  backdrop-filter:blur(18px) saturate(1.2);-webkit-backdrop-filter:blur(18px) saturate(1.2);
+  box-shadow:0 8px 22px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.08)!important;
+}
+.brand .mark.robo{
+  background:rgba(255,255,255,.07);border-radius:10px;width:34px;height:34px;
+  display:grid;place-items:center;font-size:19px;line-height:1;box-shadow:none;
+}
+.talk .tico{font-size:16px;line-height:1}
+.nav{
+  inset-inline:12px!important;max-width:none!important;margin-inline:0!important;
+  bottom:12px!important;padding:8px!important;border-radius:26px!important;
+  background:linear-gradient(180deg,rgba(22,26,36,.78),rgba(16,19,27,.72))!important;
+  border:1px solid rgba(255,255,255,.09)!important;
+  box-shadow:0 18px 44px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.09)!important;
+  backdrop-filter:blur(24px) saturate(1.3);-webkit-backdrop-filter:blur(24px) saturate(1.3);
+}
+.nav button{color:#8A93A3!important;font-size:10.5px!important;padding:6px 2px!important;gap:3px!important;background:transparent!important;box-shadow:none!important}
+.nav button .nico{font-size:23px;line-height:1.15;display:block;border-radius:999px;padding:5px 15px}
+.nav button.on{color:#fff!important}
+.nav button.on .nico{
+  background:rgba(255,255,255,.13);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.16),0 4px 12px rgba(0,0,0,.35);
+  animation:iconPop .55s var(--spring) both;
+}
+.nav button:active .nico{transform:scale(.88)}
 </style>
 
 </head>
@@ -1107,7 +1171,7 @@ body{color:#EDF2F8}
 </svg>
 
 <div id="splash">
-  <div class="sp-mark"><i></i><i></i><i></i><i></i></div>
+  <div class="sp-emoji">🤖</div>
   <div class="sp-name">HTMHGR</div>
   <div class="sp-tag">مساعد قناة الذكاء الاصطناعي</div>
 </div>
@@ -1116,12 +1180,11 @@ body{color:#EDF2F8}
 <div class="view on" id="view-home">
   <div class="sky">
     <div class="topbar">
-      <button class="talk" id="talkBtn">
-        <svg viewBox="0 0 24 24" class="ic"><path d="M21 11.5a8.5 8.5 0 0 1-8.5 8.5c-1.5 0-3-.4-4.2-1.1L3 20l1.1-5.3A8.5 8.5 0 1 1 21 11.5z"/></svg>
+      <button class="talk" id="talkBtn"><span class="tico">💬</span>
         كلّم البوت
       </button>
       <div class="brand">
-        <span class="mark"><i></i><i></i><i></i><i></i></span>
+        <span class="mark robo">🤖</span>
         <b>HTMHGR</b>
       </div>
     </div>
@@ -1399,11 +1462,11 @@ body{color:#EDF2F8}
 </div>
 
 <nav class="nav">
-  <button data-nav="view-home" class="on"><svg viewBox="0 0 24 24" class="ic"><path d="m3 11 9-8 9 8"/><path d="M5 9.5V21h14V9.5"/></svg>الرئيسية</button>
-  <button data-nav="view-skills"><svg viewBox="0 0 24 24" class="ic"><path d="M10 3.5A2.5 2.5 0 0 1 12.5 6v1h3A2.5 2.5 0 0 1 18 9.5 2.5 2.5 0 0 1 15.5 12h-3v3a2.5 2.5 0 1 1-5 0v-3h-3A2.5 2.5 0 0 1 2 9.5 2.5 2.5 0 0 1 4.5 7h3V6A2.5 2.5 0 0 1 10 3.5z" transform="translate(1.5 1) scale(.92)"/></svg>المهارات</button>
-  <button data-nav="view-characters"><svg viewBox="0 0 24 24" class="ic"><circle cx="9" cy="10" r=".5"/><circle cx="15" cy="10" r=".5"/><path d="M8.5 14.5c1 1.2 2.2 1.8 3.5 1.8s2.5-.6 3.5-1.8"/><path d="M12 3a9 9 0 1 0 9 9"/></svg>المساعد</button>
-  <button data-nav="view-feed"><svg viewBox="0 0 24 24" class="ic"><path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/></svg>النشاط</button>
-  <button data-nav="view-menu"><svg viewBox="0 0 24 24" class="ic"><path d="M4 7h16M4 12h16M4 17h16"/></svg>القائمة</button>
+  <button data-nav="view-home" class="on"><span class="nico">🏠</span>الرئيسية</button>
+  <button data-nav="view-skills"><span class="nico">🧩</span>المهارات</button>
+  <button data-nav="view-characters"><span class="nico">🤖</span>المساعد</button>
+  <button data-nav="view-feed"><span class="nico">📰</span>النشاط</button>
+  <button data-nav="view-menu"><span class="nico">👤</span>القائمة</button>
 </nav>
 
 <script>
