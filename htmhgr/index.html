@@ -1312,18 +1312,18 @@ html body #splash{animation:none!important;animation-name:none!important}
 @keyframes spLook{0%,40%{transform:translateX(0)}45%,56%{transform:translateX(7px)}61%,72%{transform:translateX(-7px)}77%,100%{transform:translateX(0)}}
 @media (prefers-reduced-motion: reduce){.sp-eye{animation:none!important}}
 
-/* ===== V24 — v21 with a DEVELOPED BACKGROUND ONLY (Mustafa's choice
-   2026-11-05: keep v21, develop the background). Nothing about the mascot,
-   its entrance, its float, or the eye choreography changes — every rule
-   below paints the STAGE behind it: a luminous core bloom behind the head,
-   a richer mint field with deeper edges, a soft vignette, and a slow glow
-   drift. boim craft (glow, blur, depth) on HIS mint palette. ===== */
-html body #splash{isolation:isolate;background-color:#0E9C74!important;background-image:radial-gradient(90% 62% at 50% 30%,rgba(233,255,246,.95) 0%,rgba(167,255,217,.55) 34%,rgba(70,250,189,0) 68%),radial-gradient(135% 100% at 50% 26%,#B9FFE2 0%,#46FABD 46%,#17BE96 76%,#0B7A5C 100%),linear-gradient(180deg,rgba(255,255,255,.10) 0%,rgba(4,60,44,.14) 100%)!important;background-size:190% 190%,190% 190%,100% 100%!important;animation:spGlowDrift 12s ease-in-out infinite alternate!important;animation-name:spGlowDrift!important;animation-duration:12s!important;animation-timing-function:ease-in-out!important;animation-iteration-count:infinite!important;animation-direction:alternate!important}
-html[data-theme="light"] body #splash{background-color:#0E9C74!important;background-image:radial-gradient(90% 62% at 50% 30%,rgba(233,255,246,.95) 0%,rgba(167,255,217,.55) 34%,rgba(70,250,189,0) 68%),radial-gradient(135% 100% at 50% 26%,#B9FFE2 0%,#46FABD 46%,#17BE96 76%,#0B7A5C 100%),linear-gradient(180deg,rgba(255,255,255,.10) 0%,rgba(4,60,44,.14) 100%)!important;background-size:190% 190%,190% 190%,100% 100%!important}
-@keyframes spGlowDrift{from{background-position:10% 0%,12% 0%,0 0}to{background-position:90% 100%,88% 100%,0 0}}
-html body #splash::before{content:"";position:absolute;left:50%;top:27%;width:430px;height:430px;margin:-215px 0 0 -215px;border-radius:50%;background:radial-gradient(circle,rgba(240,255,248,.85) 0%,rgba(140,255,214,.38) 42%,rgba(70,250,189,0) 70%);filter:blur(28px);z-index:0;pointer-events:none;animation:spBloom 6s ease-in-out infinite alternate;animation-name:spBloom;animation-duration:6s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-direction:alternate}
-html body #splash::after{content:"";position:absolute;inset:0;background:radial-gradient(125% 92% at 50% 42%,rgba(3,43,32,0) 55%,rgba(3,43,32,.30) 100%);z-index:0;pointer-events:none}
-@keyframes spBloom{from{transform:scale(1);opacity:.68}to{transform:scale(1.07);opacity:.88}}
+/* ===== V25 — v21 with a WHITE stage (Mustafa 2026-11-05: a white
+   background would be more premium). Background-only again: the mascot,
+   its entrance, float and eye choreography stay byte-identical to v21.
+   The white is dressed, not flat: pure-white luminous center, a whisper
+   of mint aura behind the head (his colour, as light not paint), edges
+   cooling to a soft grey-mint, a barely-there vignette. ===== */
+html body #splash{isolation:isolate;background-color:#FFFFFF!important;background-image:radial-gradient(90% 62% at 50% 30%,rgba(70,250,189,.20) 0%,rgba(70,250,189,0) 55%),radial-gradient(135% 100% at 50% 26%,#FFFFFF 0%,#FBFEFC 45%,#EDF6F1 78%,#DFEDE5 100%),linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(11,90,66,.05) 100%)!important;background-size:190% 190%,190% 190%,100% 100%!important;animation:spWhiteDrift 12s ease-in-out infinite alternate!important;animation-name:spWhiteDrift!important;animation-duration:12s!important;animation-timing-function:ease-in-out!important;animation-iteration-count:infinite!important;animation-direction:alternate!important}
+html[data-theme="light"] body #splash{background-color:#FFFFFF!important;background-image:radial-gradient(90% 62% at 50% 30%,rgba(70,250,189,.20) 0%,rgba(70,250,189,0) 55%),radial-gradient(135% 100% at 50% 26%,#FFFFFF 0%,#FBFEFC 45%,#EDF6F1 78%,#DFEDE5 100%),linear-gradient(180deg,rgba(255,255,255,0) 0%,rgba(11,90,66,.05) 100%)!important;background-size:190% 190%,190% 190%,100% 100%!important}
+@keyframes spWhiteDrift{from{background-position:10% 0%,12% 0%,0 0}to{background-position:90% 100%,88% 100%,0 0}}
+html body #splash::before{content:"";position:absolute;left:50%;top:27%;width:430px;height:430px;margin:-215px 0 0 -215px;border-radius:50%;background:radial-gradient(circle,rgba(70,250,189,.34) 0%,rgba(70,250,189,.14) 42%,rgba(70,250,189,0) 70%);filter:blur(28px);z-index:0;pointer-events:none;animation:spBloomW 6s ease-in-out infinite alternate;animation-name:spBloomW;animation-duration:6s;animation-timing-function:ease-in-out;animation-iteration-count:infinite;animation-direction:alternate}
+html body #splash::after{content:"";position:absolute;inset:0;background:radial-gradient(125% 92% at 50% 42%,rgba(11,60,44,0) 58%,rgba(11,60,44,.10) 100%);z-index:0;pointer-events:none}
+@keyframes spBloomW{from{transform:scale(1);opacity:.6}to{transform:scale(1.07);opacity:.85}}
 html body #splash .sp-halo{z-index:1}
 html body #splash .sp-shadow{z-index:1}
 html body #splash .sp-face{z-index:2}
